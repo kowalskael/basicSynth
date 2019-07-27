@@ -16,7 +16,7 @@ class Instrument {
    };
  }
 
- updateSynthType([type]) {
+ updateSynthType(synthType) {
    let newSynth = new Tone[synthType]();
    console.log(this.defaultSettings[synthType]);
  }

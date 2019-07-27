@@ -8,7 +8,7 @@
     "build": "parcel build src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Elżbieta Kowalska <kowalska.el@gmail.com",
   "license": "ISC",
   "devDependencies": {
     "parcel": "^1.12.3"
@@ -17,3 +17,4 @@
     "tone": "^13.4.9"
   }
 }
+

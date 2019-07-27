@@ -23,7 +23,7 @@ class Instrument {
 }
 
 let inst = new Instrument();
-inst.updateSynthType('sine');
+inst.updateSynthType('Synth');
 
 
 

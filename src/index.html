@@ -31,12 +31,12 @@ AmplitudeEnvelope
 <br>
 Envelope Attack
 <div>
-    <input type="range" id="env-attack" min="10" max="20" step="0.01">
+    <input type="range" id="env-attack" min="0" max="5" step="0.01">
 </div>
 
 Envelope Decay
 <div>
-    <input type="range" id="env-decay" min="1" max="400" step="0.01">
+    <input type="range" id="env-decay" min="0" max="5" step="0.01">
 </div>
 
 Envelope Sustain
@@ -46,8 +46,9 @@ Envelope Sustain
 
 Envelope Release
 <div>
-    <input type="range" id="env-release" min="1" max="400">
+    <input type="range" id="env-release" min="1" max="10">
 </div>
+
 
 <div>
     <button id="toggle">
@@ -58,6 +59,3 @@ Envelope Release
 <script src="index.js"></script>
 </body>
 </html>
-
-
-

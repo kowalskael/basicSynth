@@ -15,8 +15,26 @@ $envSustain.addEventListener('input', () => env.sustain = $envSustain.value);
 const $envRelease = document.querySelector('#env-release');
 $envRelease.addEventListener('input', () => env.release = $envRelease.value);
 
+const amp = new Tone.Volume(12);
+amp.connect(env);
+
+const $ampVolume = document.querySelector('#amp-volume');
+$ampVolume.addEventListener('input', () => amp.volume.value = $ampVolume.value);
+
+const filter = new Tone.AutoFilter(2, 0.6);
+filter.connect(amp).sync().start();
+
+const $filterFreq = document.querySelector('#filter-freq');
+$filterFreq.addEventListener('input', () => filter.frequency.value = $filterFreq.value);
+const $filterBaseFreq = document.querySelector('#filter-baseFreq');
+$filterBaseFreq.addEventListener('input', () => filter.baseFrequency = $filterBaseFreq.value);
+const $filterOctaves = document.querySelector('#filter-octaves');
+$filterOctaves.addEventListener('input', () => filter.octaves = $filterOctaves.value);
+const $filterDepth = document.querySelector('#filter-depth');
+$filterDepth.addEventListener('input', () => filter.depth.value = $filterDepth.value);
+
 const osc = new Tone.Oscillator(20, 'sine');
-osc.connect(env);
+osc.fan(env, filter);
 osc.start();
 
 const $oscSine = document.querySelector('#sine');

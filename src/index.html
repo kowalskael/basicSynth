@@ -49,6 +49,22 @@ Envelope Release
     <input type="range" id="env-release" min="1" max="10">
 </div>
 
+LFO <br>
+Frequency
+<div>
+    <input type="range" id="lfo-freq" min="10" max="1000">
+</div>
+Amplitude
+<div>
+    <input type="range" id="lfo-amp" min="0" max="100">
+</div>
+Type
+<div class="lfo-type">
+    <input type="button" id="lfo-sine" value="sine"/>
+    <input type="button" id="lfo-square" value="square"/>
+    <input type="button" id="lfo-triangle" value="triangle"/>
+    <input type="button" id="lfo-sawtooth" value="sawtooth"/>
+</div>
 
 <div>
     <button id="toggle">
@@ -59,3 +75,4 @@ Envelope Release
 <script src="index.js"></script>
 </body>
 </html>
+

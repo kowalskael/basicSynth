@@ -10,13 +10,27 @@
 </head>
 <body>
 
-<select id="osc-type">
-    <option value="sine" selected>sine</option>
-    <option value="square">square</option>
-    <option value="triangle">triangle</option>
-    <option value="sawtooth">sawtooth</option>
-</select>
+<div class="container">
+    <select id="osc-type">
+        <option value="sine" selected>sine</option>
+        <option value="square">square</option>
+        <option value="triangle">triangle</option>
+        <option value="sawtooth">sawtooth</option>
+    </select>
+</div>
+
+<div>
+    <input type="range" id="osc-partials" min="0" max="32">
+</div>
+
+<div>
+    <button id="toggle">
+        <span>Play / Stop</span>
+    </button>
+</div>
 
 <script src="index.js"></script>
 </body>
 </html>
+
+

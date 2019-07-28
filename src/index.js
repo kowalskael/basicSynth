@@ -43,3 +43,4 @@ osc.updateOscType($oscType.value);
 $oscType.addEventListener('change', e =>
   osc.updateOscType($oscType.value)
 );
+

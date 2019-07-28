@@ -10,21 +10,55 @@
 </head>
 <body>
 
-<div class="container">
-    <select id="osc-type">
-        <option value="sine" selected>sine</option>
-        <option value="square">square</option>
-        <option value="triangle">triangle</option>
-        <option value="sawtooth">sawtooth</option>
-    </select>
+Oscillator
+Type
+<div class="osc-type">
+    <input type="button" id="sine" value="sine"/>
+    <input type="button" id="square" value="square"/>
+    <input type="button" id="triangle" value="triangle"/>
+    <input type="button" id="sawtooth" value="sawtooth"/>
 </div>
-
+Frequency
 <div>
     <input type="range" id="osc-freq" min="20" max="840">
 </div>
-
+PartialCounts
 <div>
     <input type="range" id="osc-partials" min="0" max="32">
+</div>
+
+AmplitudeEnvelope
+<br>
+Envelope Attack
+<div>
+    <input type="range" id="env-attack" min="10" max="20" step="0.01">
+</div>
+
+Envelope Decay
+<div>
+    <input type="range" id="env-decay" min="1" max="400" step="0.01">
+</div>
+
+Envelope Sustain
+<div>
+    <input type="range" id="env-sustain" min="1" max="100">
+</div>
+
+Envelope Release
+<div>
+    <input type="range" id="env-release" min="1" max="400">
+</div>
+
+AutoFilter <br>
+Frequency
+<div>
+    <input type="range" id="filter-freq" min="20" max="840">
+</div>
+
+AutoPanner <br>
+Frequency
+<div>
+    <input type="range" id="panner-freq" min="0" max="20">
 </div>
 
 <div>
@@ -36,5 +70,6 @@
 <script src="index.js"></script>
 </body>
 </html>
+
 
 

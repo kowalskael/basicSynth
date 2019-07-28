@@ -1,16 +1,15 @@
 import * as Tone from 'tone';
 
 const gain = new Tone.Gain();
-gain.sync();
+gain.toMaster();
 
 const env = new Tone.AmplitudeEnvelope({
-	"attack": 1.1,
-	"decay": 0.2,
+	"attack": 5.1,
+	"decay": 10.2,
 	"sustain": 1.0,
-	"release": 0.8
+	"release": 5.8
 	}
 );
-env.triggerAttack();
 env.toMaster();
 
 const $envAttack = document.querySelector('#env-attack');
@@ -24,6 +23,7 @@ $envSustain.addEventListener('input', () => env.sustain = $envSustain.value);
 
 const $envRelease = document.querySelector('#env-release');
 $envRelease.addEventListener('input', () => env.release = $envRelease.value);
+console.log($envRelease.value);
 
 const osc = new Tone.Oscillator(20, 'sine');
 osc.connect(env);
@@ -46,27 +46,19 @@ $oscFreq.addEventListener('input', () => osc.frequency.value = $oscFreq.value);
 
 const $oscPartialCounts = document.querySelector('#osc-partials');
 $oscPartialCounts.addEventListener('input', () => osc.partialCount = $oscPartialCounts.value);
+console.log($oscPartialCounts.value);
 
-const filter = new Tone.AutoFilter();
-filter.start();
-
-const $filterFreq = document.querySelector('#filter-freq');
-$filterFreq.addEventListener('input', () => filter.frequency.value = $filterFreq.value);
-
-const panner = new Tone.AutoPanner();
-panner.start();
-panner.chain(env, filter, gain);
-
-const $pannerFreq = document.querySelector('#panner-freq');
-$pannerFreq.addEventListener('input', () => panner.frequency.value = $pannerFreq.value);
-
-const osc0 = new Tone.Oscillator(440, 'square6');
-osc0.connect(panner).start();
 
 const $toggle = document.querySelector('#toggle');
 $toggle.addEventListener('click', function() {
 	Tone.Transport.Start = !Tone.Transport.Start;
-	if (Tone.Transport.Start) Tone.Transport.start();
-	else Tone.Transport.stop();
+	if (Tone.Transport.Start) {
+		Tone.Transport.start();
+		env.triggerAttack();
+	}
+	else {
+		Tone.Transport.stop();
+		env.triggerRelease();
+	}
 });
 

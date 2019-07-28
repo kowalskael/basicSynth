@@ -32,13 +32,34 @@ $oscFreq.addEventListener('input', () => osc.frequency.value = $oscFreq.value);
 const $oscPartialCounts = document.querySelector('#osc-partials');
 $oscPartialCounts.addEventListener('input', () => osc.partialCount = $oscPartialCounts.value);
 
+const lfo = new Tone.LFO(400, 0, 1);
+lfo.connect(env);
+lfo.sync().start();
+
+const $lfoFreq = document.querySelector('#lfo-freq');
+$lfoFreq.addEventListener('input', () => lfo.frequency.value = $lfoFreq.value);
+const $lfoAmp = document.querySelector('#lfo-amp');
+$lfoAmp.addEventListener('input', () => lfo.amplitude.value = $lfoAmp.value);
+const $lfoSine = document.querySelector('#lfo-sine');
+$lfoSine.addEventListener('click', () => lfo.type = 'sine');
+const $lfoSquare = document.querySelector('#lfo-square');
+$lfoSquare.addEventListener('click', () => lfo.type = 'square');
+const $lfoTriangle = document.querySelector('#lfo-triangle');
+$lfoTriangle.addEventListener('click', () => lfo.type = 'triangle');
+const $lfoSawtooth = document.querySelector('#lfo-sawtooth');
+$lfoSawtooth.addEventListener('click', () => lfo.type = 'sawtooth');
+
 const $toggle = document.querySelector('#toggle');
 $toggle.addEventListener('click', function() {
 	env.tiggerAttack = !env.tiggerAttack;
-	if (env.tiggerAttack) {
+	Tone.Transport.Start = !Tone.Transport.Start;
+	if (env.tiggerAttack && Tone.Transport.Start) {
 		env.triggerAttack();
+		Tone.Transport.start();
 	}
 	else {
 		env.triggerRelease();
+		Tone.Transport.stop();
 	}
+
 });

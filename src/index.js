@@ -3,20 +3,20 @@ import * as Tone from 'tone';
 const gain = new Tone.Gain();
 gain.toMaster();
 
-const env = new Tone.AmplitudeEnvelope();
-env.connect(gain);
+const ampEnv = new Tone.AmplitudeEnvelope();
+ampEnv.connect(gain);
 
 const $envAttack = document.querySelector('#env-attack');
-$envAttack.addEventListener('input', () => env.attack = $envAttack.value);
+$envAttack.addEventListener('input', () => ampEnv.attack = $envAttack.value);
 const $envDecay = document.querySelector('#env-decay');
-$envDecay.addEventListener('input', () => env.decay = $envDecay.value);
+$envDecay.addEventListener('input', () => ampEnv.decay = $envDecay.value);
 const $envSustain = document.querySelector('#env-sustain');
-$envSustain.addEventListener('input', () => env.sustain = $envSustain.value);
+$envSustain.addEventListener('input', () => ampEnv.sustain = $envSustain.value);
 const $envRelease = document.querySelector('#env-release');
-$envRelease.addEventListener('input', () => env.release = $envRelease.value);
+$envRelease.addEventListener('input', () => ampEnv.release = $envRelease.value);
 
 const amp = new Tone.Volume(12);
-amp.connect(env);
+amp.connect(ampEnv);
 
 const $ampVolume = document.querySelector('#amp-volume');
 $ampVolume.addEventListener('input', () => amp.volume.value = $ampVolume.value);
@@ -33,8 +33,30 @@ $filterOctaves.addEventListener('input', () => filter.octaves = $filterOctaves.v
 const $filterDepth = document.querySelector('#filter-depth');
 $filterDepth.addEventListener('input', () => filter.depth.value = $filterDepth.value);
 
+const filterEnv = new Tone.Envelope();
+filterEnv.connect(filter);
+
+/*
+const $filterEnvAttack = document.querySelector('#filterEnv-attack');
+$filterEnvAttack.addEventListener('input', () => filterEnv.attack = $filterEnvAttack.value);
+const $filterEnvDecay = document.querySelector('#filterEnv-decay');
+$filterEnvDecay.addEventListener('input', () => filterEnv.decay = $filterEnvDecay.value);
+const $filterEnvSustain = document.querySelector('#filterEnv-sustain');
+$filterEnvSustain.addEventListener('input', () => filterEnv.sustain = $filterEnvSustain.value);
+const $filterEnvRelease = document.querySelector('#filterEnv-release');
+$filterEnvRelease.addEventListener('input', () => filterEnv.release = $filterEnvRelease.value);
+*/
+
+const pitch = new Tone.PitchShift();
+pitch.connect(ampEnv);
+
+const $pitch = document.querySelector('#pitch');
+$pitch.addEventListener('input', () => pitch.pitch = $pitch.value);
+const $wet = document.querySelector('#wet');
+$wet.addEventListener('input', () => pitch.wet.value = $wet.value);
+
 const osc = new Tone.Oscillator(20, 'sine');
-osc.fan(env, filter);
+osc.fan(ampEnv, filter, pitch);
 osc.start();
 
 const $oscSine = document.querySelector('#sine');
@@ -51,7 +73,7 @@ const $oscPartialCounts = document.querySelector('#osc-partials');
 $oscPartialCounts.addEventListener('input', () => osc.partialCount = $oscPartialCounts.value);
 
 const lfo = new Tone.LFO(400, 0, 1);
-lfo.connect(env);
+lfo.connect(ampEnv);
 lfo.sync().start();
 
 const $lfoFreq = document.querySelector('#lfo-freq');
@@ -69,14 +91,17 @@ $lfoSawtooth.addEventListener('click', () => lfo.type = 'sawtooth');
 
 const $toggle = document.querySelector('#toggle');
 $toggle.addEventListener('click', function() {
-	env.tiggerAttack = !env.tiggerAttack;
+	ampEnv.tiggerAttack = !ampEnv.tiggerAttack;
+	//filterEnv.tiggerAttack = !filterEnv.tiggerAttack;
 	Tone.Transport.Start = !Tone.Transport.Start;
-	if (env.tiggerAttack && Tone.Transport.Start) {
-		env.triggerAttack();
+	if (ampEnv.tiggerAttack && Tone.Transport.Start) {
+		ampEnv.triggerAttack();
+		//filterEnv.triggerAttack();
 		Tone.Transport.start();
 	}
 	else {
-		env.triggerRelease();
+		ampEnv.triggerRelease();
+		//filterEnv.triggerRelease();
 		Tone.Transport.stop();
 	}
 

@@ -14,7 +14,8 @@
     "parcel": "^1.12.3"
   },
   "dependencies": {
+    "bulma": "^0.7.5",
+    "bulma-slider": "^2.0.0",
     "tone": "^13.4.9"
   }
 }
-

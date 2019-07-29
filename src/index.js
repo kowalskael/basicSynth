@@ -1,4 +1,5 @@
 import * as Tone from 'tone';
+import * as Bulma from 'bulma';
 
 const gain = new Tone.Gain();
 gain.toMaster();
@@ -35,6 +36,17 @@ $filterDepth.addEventListener('input', () => filter.depth.value = $filterDepth.v
 
 const filterEnv = new Tone.Envelope();
 filterEnv.connect(filter);
+
+/*
+const $filterEnvAttack = document.querySelector('#filterEnv-attack');
+$filterEnvAttack.addEventListener('input', () => filterEnv.attack = $filterEnvAttack.value);
+const $filterEnvDecay = document.querySelector('#filterEnv-decay');
+$filterEnvDecay.addEventListener('input', () => filterEnv.decay = $filterEnvDecay.value);
+const $filterEnvSustain = document.querySelector('#filterEnv-sustain');
+$filterEnvSustain.addEventListener('input', () => filterEnv.sustain = $filterEnvSustain.value);
+const $filterEnvRelease = document.querySelector('#filterEnv-release');
+$filterEnvRelease.addEventListener('input', () => filterEnv.release = $filterEnvRelease.value);
+*/
 
 const pitch = new Tone.PitchShift();
 pitch.connect(ampEnv);
@@ -81,14 +93,16 @@ $lfoSawtooth.addEventListener('click', () => lfo.type = 'sawtooth');
 const $toggle = document.querySelector('#toggle');
 $toggle.addEventListener('click', function() {
 	ampEnv.tiggerAttack = !ampEnv.tiggerAttack;
-
+	//filterEnv.tiggerAttack = !filterEnv.tiggerAttack;
 	Tone.Transport.Start = !Tone.Transport.Start;
 	if (ampEnv.tiggerAttack && Tone.Transport.Start) {
 		ampEnv.triggerAttack();
+		//filterEnv.triggerAttack();
 		Tone.Transport.start();
 	}
 	else {
 		ampEnv.triggerRelease();
+		//filterEnv.triggerRelease();
 		Tone.Transport.stop();
 	}
 

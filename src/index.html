@@ -10,103 +10,142 @@
 </head>
 <body>
 
-Oscillator
-Type
-<div class="osc-type">
-    <input type="button" id="sine" value="sine"/>
-    <input type="button" id="square" value="square"/>
-    <input type="button" id="triangle" value="triangle"/>
-    <input type="button" id="sawtooth" value="sawtooth"/>
-</div>
-Frequency
-<div>
-    <input type="range" id="osc-freq" min="20" max="840">
-</div>
-PartialCounts
-<div>
-    <input type="range" id="osc-partials" min="0" max="32">
+<section id="oscillator-1">
+    <div id="section-1">
+        Oscillator
+        Type
+        <div class="osc-type">
+            <input type="button" id="sine" class="button" value="sine"/>
+            <input type="button" id="square" class="button" value="square"/>
+            <input type="button" id="triangle" class="button" value="triangle"/>
+            <input type="button" id="sawtooth" class="button" value="sawtooth"/>
+        </div>
+        Frequency
+        <div>
+            <input id="osc-freq" class="slider is-fullwidth" type="range"  min="20" max="840">
+        </div>
+        PartialCounts
+        <div>
+            <input type="range" id="osc-partials" class="slider is-fullwidth" min="0" max="32">
+        </div>
+
+        <br><br>AmplitudeEnvelope
+        <br><br>
+        Envelope Attack
+        <div>
+            <input type="range" id="env-attack" min="0" max="5" step="0.01">
+        </div>
+
+        Envelope Decay
+        <div>
+            <input type="range" id="env-decay" min="0" max="5" step="0.01">
+        </div>
+
+        Envelope Sustain
+        <div>
+            <input type="range" id="env-sustain" min="1" max="100">
+        </div>
+
+        Envelope Release
+        <div>
+            <input type="range" id="env-release" min="1" max="10">
+        </div>
+
+
+    </div>
+
+    <div id="section-2">
+        <br><br>LFO<br><br>
+        Frequency
+        <div>
+            <input type="range" id="lfo-freq" min="10" max="1000">
+        </div>
+        Amplitude
+        <div>
+            <input type="range" id="lfo-amp" min="0" max="100">
+        </div>
+        Type
+        <div class="lfo-type">
+            <input type="button" id="lfo-sine" class="button" value="sine"/>
+            <input type="button" id="lfo-square" class="button" value="square"/>
+            <input type="button" id="lfo-triangle" class="button" value="triangle"/>
+            <input type="button" id="lfo-sawtooth" class="button" value="sawtooth"/>
+        </div>
+        <br><br>Amplifier<br><br>
+        Volume
+        <div>
+            <input type="range" id="amp-volume" min="-24" max="12" step="2">
+        </div>
+
+
+    </div>
+
+    <div id="section-3">
+        <br><br>Filter<br><br>
+        Frequency
+        <div>
+            <input type="range" id="filter-freq" min="0" max="20" step="1">
+        </div>
+        Base Frequency
+        <div>
+            <input type="range" id="filter-baseFreq" min="100" max="3900">
+        </div>
+        Octaves
+        <div>
+            <input type="range" id="filter-octaves" min="0.5" max="5" step="0.5">
+        </div>
+        Depth
+        <div>
+            <input type="range" id="filter-depth" min="0.5" max="1" step="0.1">
+        </div>
+        <!--
+        <br><br>Filter Envelope
+        <br><br>
+        Envelope Attack
+        <div>
+            <input type="range" id="filterEnv-attack" min="0" max="5" step="0.01">
+        </div>
+
+        Envelope Decay
+        <div>
+            <input type="range" id="filterEnv-decay" min="0" max="5" step="0.01">
+        </div>
+
+        Envelope Sustain
+        <div>
+            <input type="range" id="filterEnv-sustain" min="1" max="100">
+        </div>
+
+        Envelope Release
+        <div>
+            <input type="range" id="filterEnv-release" min="1" max="10">
+        </div>
+         -->
+
+        <br><br>PitchShift
+        <br><br>
+        Pitch
+        <div>
+            <input type="range" id="pitch" min="-24" max="50">
+        </div>
+        Wet
+        <div>
+            <input type="range" id="wet" min="0" max="100">
+        </div>
+    </div>
+</section>
+
+
+
+<div id="play">
+    <div>
+        <button class="button" id="toggle">
+            <span>Play / Stop</span>
+        </button>
+    </div>
 </div>
 
-<br><br>AmplitudeEnvelope
-<br><br>
-Envelope Attack
-<div>
-    <input type="range" id="env-attack" min="0" max="5" step="0.01">
-</div>
 
-Envelope Decay
-<div>
-    <input type="range" id="env-decay" min="0" max="5" step="0.01">
-</div>
-
-Envelope Sustain
-<div>
-    <input type="range" id="env-sustain" min="1" max="100">
-</div>
-
-Envelope Release
-<div>
-    <input type="range" id="env-release" min="1" max="10">
-</div>
-
-<br><br>LFO<br><br>
-Frequency
-<div>
-    <input type="range" id="lfo-freq" min="10" max="1000">
-</div>
-Amplitude
-<div>
-    <input type="range" id="lfo-amp" min="0" max="100">
-</div>
-Type
-<div class="lfo-type">
-    <input type="button" id="lfo-sine" value="sine"/>
-    <input type="button" id="lfo-square" value="square"/>
-    <input type="button" id="lfo-triangle" value="triangle"/>
-    <input type="button" id="lfo-sawtooth" value="sawtooth"/>
-</div>
-
-<br><br>Amplifier<br><br>
-Volume
-<div>
-    <input type="range" id="amp-volume" min="-24" max="12" step="2">
-</div>
-
-<br><br>Filter<br><br>
-Frequency
-<div>
-    <input type="range" id="filter-freq" min="0" max="20" step="1">
-</div>
-Base Frequency
-<div>
-    <input type="range" id="filter-baseFreq" min="100" max="3900">
-</div>
-Octaves
-<div>
-    <input type="range" id="filter-octaves" min="0.5" max="5" step="0.5">
-</div>
-Depth
-<div>
-    <input type="range" id="filter-depth" min="0.5" max="1" step="0.1">
-</div>
-
-<br><br>PitchShift
-<br><br>
-Pitch
-<div>
-    <input type="range" id="pitch" min="-24" max="50">
-</div>
-Wet
-<div>
-    <input type="range" id="wet" min="0" max="100">
-</div>
-
-<br><br>
-<div>
-    <button id="toggle">
-        <span>Play / Stop</span>
-    </button>
-</div>
 
 <script src="index.js"></script>
 </body>

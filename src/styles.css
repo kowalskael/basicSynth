@@ -9,11 +9,31 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    margin: 50px;
+    margin: 50px 50px 0px 50px;
 }
 
 #oscillator-1 > div {
-    margin: 30px
+    margin-left: 30px;
+    width: 100%;
+}
+
+.change-value {
+    margin: 20px;
+}
+
+.change-value > p {
+    padding-bottom: 10px;
+}
+
+.change-value-button {
+ width:100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button {
+    width: 100%;
+    margin-left: 5px;
 }
 
 #play {
@@ -21,5 +41,14 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-top: 20px;
+    margin: 50px;
 }
+
+.slider {
+    width: 100%;
+}
+
+span {
+    font-size: 24px;
+}
+

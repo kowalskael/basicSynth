@@ -10,17 +10,71 @@
 </head>
 <body>
 
-<section id="oscillator-1">
-    <div id="section-1">
+<section id="keyboard">
+    <div id="black-keys">
+        <div class="group-1">
+            <div class="black-key"></div>
+            <div class="black-key"></div>
+            <div class="black-key"></div>
+        </div>
+
+        <div class="group-2">
+            <div class="black-key"></div>
+            <div class="black-key"></div>
+        </div>
+
+        <div class="group-3">
+            <div class="black-key"></div>
+            <div class="black-key"></div>
+            <div class="black-key"></div>
+        </div>
+
+        <div class="group-3">
+            <div class="black-key"></div>
+            <div class="black-key"></div>
+        </div>
+
+        <div class="group-4">
+            <div class="black-key"></div>
+        </div>
+    </div>
+
+    <div id="white-keys">
+
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+
+
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+            <div class="white-key"></div>
+
+    </div>
+</section>
+
+<section id="panel">
+    <div class="group">
         <div id="oscillator">
             <span>Oscillator</span>
             <div class="change-value">
                 <p>Type</p>
                 <div class="change-value-button">
-                <input type="button" id="sine" class="button" value="sine"/>
-                <input type="button" id="square" class="button" value="square"/>
-                <input type="button" id="triangle" class="button" value="triangle"/>
-                <input type="button" id="sawtooth" class="button" value="sawtooth"/>
+                    <input type="button" id="sine" class="button" value="sine"/>
+                    <input type="button" id="square" class="button" value="square"/>
+                    <input type="button" id="triangle" class="button" value="triangle"/>
+                    <input type="button" id="sawtooth" class="button" value="sawtooth"/>
                 </div>
             </div>
 
@@ -34,7 +88,20 @@
                 <input type="range" id="osc-partials" class="slider" min="0" max="32">
             </div>
         </div>
+        <div id="pitch">
+            <span>PitchShift</span>
+            <div class="change-value">
+                <p>Pitch</p>
+                <input type="range" id="pitch" class="slider" min="-36" max="36" step="0.0001">
+            </div>
+            <div class="change-value">
+                <p>Wet</p>
+                <input type="range" id="wet" class="slider" min="0" max="100">
+            </div>
+        </div>
+    </div>
 
+    <div class="group">
         <div id="envelope">
             <span>Amplitude Envelope</span>
             <div class="change-value">
@@ -59,7 +126,7 @@
         </div>
     </div>
 
-    <div id="section-2">
+    <div class="group">
         <div id="lfo">
             <span>LFO</span>
             <div class="change-value">
@@ -90,7 +157,7 @@
 
     </div>
 
-    <div id="section-3">
+    <div class="group">
         <div id="filter">
             <span>Filter</span>
             <div class="change-value">
@@ -110,24 +177,12 @@
                 <input type="range" id="filter-depth" class="slider" min="0.5" max="1" step="0.1">
             </div>
         </div>
-
-        <div id="pitch">
-            <span>PitchShift</span>
-            <div class="change-value">
-                <p>Pitch</p>
-                <input type="range" id="pitch" class="slider" min="-36" max="36" step="0.0001">
-            </div>
-            <div class="change-value">
-                <p>Wet</p>
-                <input type="range" id="wet" class="slider" min="0" max="100">
-            </div>
-        </div>
     </div>
 </section>
 
 
 
-<div id="play">
+<div id="section-play">
     <div>
         <button class="button" id="toggle">
             Play / Stop

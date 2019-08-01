@@ -1,32 +1,79 @@
-
 body {
     margin: 0px;
     padding: 0px;
     font-family: Arial;
+    color: #333;
 }
 
-#oscillator-1 {
+#keyboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 50px 50px 20px 50px;
+}
+
+#black-keys {
+    display: flex;
+    flex-direction: row;
+}
+
+.group-1, .group-2, .group-3, .group-4 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0px 26px 0px 26px;
+}
+
+.black-key {
+    width: 35px;
+    height: 60px;
+    background: #333;
+    border-radius: 3px;
+    margin: 8px;
+}
+
+#white-keys {
+    display: flex;
+    flex-direction: row;
+}
+
+.white-key {
+    width: 35px;
+    height: 60px;
+    border: 1.2px solid #333;
+    border-radius: 3px;
+    margin: 8px;
+}
+
+#panel {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    margin: 50px 50px 0px 50px;
+    margin: 0px 50px 0px 50px;
+    font-size: 14px;
 }
 
-#oscillator-1 > div {
-    margin-left: 30px;
+#panel > div {
+    margin: 0px 30px 0px 30px;
     width: 100%;
 }
 
+.group > div {
+    margin-top: 20px;
+}
+
 .change-value {
-    margin: 20px;
+    margin-top: 15px;
 }
 
 .change-value > p {
-    padding-bottom: 10px;
+    padding-bottom: 5px;
 }
 
 .change-value-button {
- width:100%;
+    width:100%;
     display: flex;
     justify-content: space-between;
 }
@@ -36,12 +83,12 @@ body {
     margin-left: 5px;
 }
 
-#play {
+#section-play {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin: 50px;
+    margin-bottom: 50px;
 }
 
 .slider {
@@ -49,6 +96,6 @@ body {
 }
 
 span {
-    font-size: 24px;
+    font-size: 18px;
 }
 

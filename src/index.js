@@ -57,19 +57,20 @@ const $oscTriangle = document.querySelector('#triangle');
 $oscTriangle.addEventListener('click', () => osc.type = 'triangle');
 const $oscSawtooth = document.querySelector('#sawtooth');
 $oscSawtooth.addEventListener('click', () => osc.type = 'sawtooth');
-const $oscFreq = document.querySelector('#osc-freq');
-$oscFreq.addEventListener('input', () => osc.frequency.value = $oscFreq.value);
+// const $oscFreq = document.querySelector('#osc-freq');
+// $oscFreq.addEventListener('input', () => osc.frequency.value = $oscFreq.value);
 const $oscPartialCounts = document.querySelector('#osc-partials');
 $oscPartialCounts.addEventListener('input', () => osc.partialCount = $oscPartialCounts.value);
 
-const keysFreq = document.querySelector('.group-1');
-const keyFreq = keysFreq.childNodes;
+const $keyFreq = document.querySelector('#keyboard').childNodes;
 
-for (let i = 0; i < keyFreq.lenght; i++) {
-	// oblicz value = "", value 0 = 87.31, value = keysFreq.value[0] * Math.pow(1.059463094359 * i);
-	// keysFreq[keysFreq.lenght-1].addEventListener('click', () => osc.frequency.value = keysFreq.value[0]);
+for (let i = 0; i < $keyFreq.length; i++) {
+	$keyFreq[0].value = 87.31;
+	if (i > 0) {
+		$keyFreq[i].value = $keyFreq[0].value * Math.pow(Math.pow(2, 1/12), i);
+	}
+	$keyFreq[i].addEventListener('click', () => osc.frequency.value = $keyFreq[i].value);
 }
-
 
 const lfo = new Tone.LFO(400, 0, 1);
 lfo.connect(ampEnv);

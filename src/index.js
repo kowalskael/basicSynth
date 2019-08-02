@@ -37,17 +37,6 @@ $filterDepth.addEventListener('input', () => filter.depth.value = $filterDepth.v
 const filterEnv = new Tone.Envelope();
 filterEnv.connect(filter);
 
-/*
-const $filterEnvAttack = document.querySelector('#filterEnv-attack');
-$filterEnvAttack.addEventListener('input', () => filterEnv.attack = $filterEnvAttack.value);
-const $filterEnvDecay = document.querySelector('#filterEnv-decay');
-$filterEnvDecay.addEventListener('input', () => filterEnv.decay = $filterEnvDecay.value);
-const $filterEnvSustain = document.querySelector('#filterEnv-sustain');
-$filterEnvSustain.addEventListener('input', () => filterEnv.sustain = $filterEnvSustain.value);
-const $filterEnvRelease = document.querySelector('#filterEnv-release');
-$filterEnvRelease.addEventListener('input', () => filterEnv.release = $filterEnvRelease.value);
-*/
-
 const pitch = new Tone.PitchShift();
 pitch.connect(ampEnv);
 
@@ -73,6 +62,15 @@ $oscFreq.addEventListener('input', () => osc.frequency.value = $oscFreq.value);
 const $oscPartialCounts = document.querySelector('#osc-partials');
 $oscPartialCounts.addEventListener('input', () => osc.partialCount = $oscPartialCounts.value);
 
+const keysFreq = document.querySelector('.group-1');
+const keyFreq = keysFreq.childNodes;
+
+for (let i = 0; i < keyFreq.lenght; i++) {
+	// oblicz value = "", value 0 = 87.31, value = keysFreq.value[0] * Math.pow(1.059463094359 * i);
+	// keysFreq[keysFreq.lenght-1].addEventListener('click', () => osc.frequency.value = keysFreq.value[0]);
+}
+
+
 const lfo = new Tone.LFO(400, 0, 1);
 lfo.connect(ampEnv);
 lfo.sync().start();
@@ -93,16 +91,13 @@ $lfoSawtooth.addEventListener('click', () => lfo.type = 'sawtooth');
 const $toggle = document.querySelector('#toggle');
 $toggle.addEventListener('click', function() {
 	ampEnv.tiggerAttack = !ampEnv.tiggerAttack;
-	//filterEnv.tiggerAttack = !filterEnv.tiggerAttack;
 	Tone.Transport.Start = !Tone.Transport.Start;
 	if (ampEnv.tiggerAttack && Tone.Transport.Start) {
 		ampEnv.triggerAttack();
-		//filterEnv.triggerAttack();
 		Tone.Transport.start();
 	}
 	else {
 		ampEnv.triggerRelease();
-		//filterEnv.triggerRelease();
 		Tone.Transport.stop();
 	}
 

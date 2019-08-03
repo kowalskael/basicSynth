@@ -57,8 +57,6 @@ const $oscTriangle = document.querySelector('#triangle');
 $oscTriangle.addEventListener('click', () => osc.type = 'triangle');
 const $oscSawtooth = document.querySelector('#sawtooth');
 $oscSawtooth.addEventListener('click', () => osc.type = 'sawtooth');
-// const $oscFreq = document.querySelector('#osc-freq');
-// $oscFreq.addEventListener('input', () => osc.frequency.value = $oscFreq.value);
 const $oscPartialCounts = document.querySelector('#osc-partials');
 $oscPartialCounts.addEventListener('input', () => osc.partialCount = $oscPartialCounts.value);
 

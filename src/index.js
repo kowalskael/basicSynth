@@ -65,10 +65,10 @@ const $keyFreq = [...document.querySelectorAll('#keyboard div')];
 
 $keyFreq.forEach((key, index) => key.addEventListener('click', () => osc.frequency.value = indexToFreq(index)));
 
-const keyCodes = $keyFreq.map(div => Number(div.getAttribute('data-key')));
+const keyCodes = $keyFreq.map(div => div.getAttribute('data-key'));
 
 window.addEventListener('keydown', e => {
-  const index = keyCodes.indexOf(e.keyCode);
+  const index = keyCodes.indexOf(e.code);
   osc.frequency.value = indexToFreq(index);
 });
 

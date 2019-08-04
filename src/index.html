@@ -1,176 +1,163 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>basicSynth</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+  >
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>basicSynth</title>
+  <link rel="stylesheet" href="styles.scss">
 </head>
 <body>
-
 <section id="keyboard">
-    <div class="white-key"></div>
-    <div class="white-key"></div>
-    <div class="white-key"></div>
-    <div class="white-key"></div>
+  <div class="white key" data-key="KeyQ" data-name="Cl"></div>
+  <div class="black key" data-key="Digit2" data-name="C#l"></div>
+  <div class="white key" data-key="KeyW" data-name="Dl"></div>
+  <div class="black key" data-key="Digit3" data-name="D#l"></div>
+  <div class="white key" data-key="KeyE" data-name="El"></div>
+  <div class="white key" data-key="KeyR" data-name="Fl"></div>
+  <div class="black key" data-key="Digit5" data-name="F#l"></div>
+  <div class="white key" data-key="KeyT" data-name="Gl"></div>
+  <div class="black key" data-key="Digit6" data-name="G#l"></div>
+  <div class="white key" data-key="KeyY" data-name="Al"></div>
+  <div class="black key" data-key="Digit7" data-name="A#l"></div>
+  <div class="white key" data-key="KeyU" data-name="Bl"></div>
 
-    <div class="black-key"></div>
-    <div class="black-key"></div>
-    <div class="black-key"></div>
-
-    <div class="white-key"></div>
-    <div class="white-key"></div>
-    <div class="white-key"></div>
-
-    <div class="black-key"></div>
-    <div class="black-key"></div>
-
-    <div class="white-key"></div>
-    <div class="white-key"></div>
-    <div class="white-key"></div>
-    <div class="white-key"></div>
-
-    <div class="black-key"></div>
-    <div class="black-key"></div>
-    <div class="black-key"></div>
-
-    <div class="white-key"></div>
-    <div class="white-key"></div>
-    <div class="white-key"></div>
-
-    <div class="black-key"></div>
-    <div class="black-key"></div>
-
-    <div class="white-key"></div>
-    <div class="white-key"></div>
-
-    <div class="black-key"></div>
-
+  <div class="white key" data-key="KeyZ" data-name="Cu"></div>
+  <div class="black key" data-key="KeyS" data-name="C#u"></div>
+  <div class="white key" data-key="KeyX" data-name="Du"></div>
+  <div class="black key" data-key="KeyD" data-name="D#u"></div>
+  <div class="white key" data-key="KeyC" data-name="Eu"></div>
+  <div class="white key" data-key="KeyV" data-name="Fu"></div>
+  <div class="black key" data-key="KeyG" data-name="F#u"></div>
+  <div class="white key" data-key="KeyB" data-name="Gu"></div>
+  <div class="black key" data-key="KeyH" data-name="G#u"></div>
+  <div class="white key" data-key="KeyN" data-name="Au"></div>
+  <div class="black key" data-key="KeyJ" data-name="A#u"></div>
+  <div class="white key" data-key="KeyM" data-name="Bu"></div>
 </section>
 
 <section id="panel">
-    <div class="group">
-        <div id="oscillator">
-            <span>Oscillator</span>
-            <div class="change-value">
-                <p>Type</p>
-                <div class="change-value-button">
-                    <input type="button" id="sine" class="button" value="sine"/>
-                    <input type="button" id="square" class="button" value="square"/>
-                    <input type="button" id="triangle" class="button" value="triangle"/>
-                    <input type="button" id="sawtooth" class="button" value="sawtooth"/>
-                </div>
-            </div>
+  <div class="group">
+    <div id="oscillator">
+      <span>Oscillator</span>
+      <div class="change-value">
+        <p>Type</p>
+        <div class="change-value-button">
+          <input type="button" id="sine" class="button" value="sine"/>
+          <input type="button" id="square" class="button" value="square"/>
+          <input type="button" id="triangle" class="button" value="triangle"/>
+          <input type="button" id="sawtooth" class="button" value="sawtooth"/>
+        </div>
+      </div>
 
-            <div class="change-value">
-                <p>PartialCounts</p>
-                <input type="range" id="osc-partials" class="slider" min="0" max="32">
-            </div>
+      <div class="change-value">
+        <label for="osc-partials">PartialCounts</label>
+        <input type="range" id="osc-partials" class="slider" min="0" max="32">
+      </div>
+    </div>
+    <div id="pitchShift">
+      <span>PitchShift</span>
+      <div class="change-value">
+        <label for="pitch">Pitch</label>
+        <input type="range" id="pitch" class="slider" min="-36" max="36" step="0.0001">
+      </div>
+      <div class="change-value">
+        <label for="wet">Wet</label>
+        <input type="range" id="wet" class="slider" min="0" max="100">
+      </div>
+    </div>
+  </div>
+
+  <div class="group">
+    <div id="envelope">
+      <span>Amplitude Envelope</span>
+      <div class="change-value">
+        <label for="env-attack">Envelope Attack</label>
+        <input type="range" id="env-attack" class="slider" min="0" max="5" step="0.01">
+      </div>
+
+      <div class="change-value">
+        <label for="env-decay">Envelope Decay</label>
+        <input type="range" id="env-decay" class="slider" min="0" max="5" step="0.01">
+      </div>
+
+      <div class="change-value">
+        <label for="env-sustain">Envelope Sustain</label>
+        <input type="range" id="env-sustain" class="slider" min="1" max="100">
+      </div>
+
+      <div class="change-value">
+        <label for="env-release">Envelope Release</label>
+        <input type="range" id="env-release" class="slider" min="1" max="10">
+      </div>
+    </div>
+  </div>
+
+  <div class="group">
+    <div id="lfo">
+      <span>LFO</span>
+      <div class="change-value">
+        <label for="lfo-freq">Frequency</label>
+        <input type="range" id="lfo-freq" class="slider" min="10" max="1000">
+      </div>
+      <div class="change-value">
+        <label for="lfo-amp">Amplitude</label>
+        <input type="range" id="lfo-amp" class="slider" min="0" max="100">
+      </div>
+      <div class="change-value">
+        <p>Type</p>
+        <div class="change-value-button">
+          <input type="button" id="lfo-sine" class="button" value="sine"/>
+          <input type="button" id="lfo-square" class="button" value="square"/>
+          <input type="button" id="lfo-triangle" class="button" value="triangle"/>
+          <input type="button" id="lfo-sawtooth" class="button" value="sawtooth"/>
         </div>
-        <div id="pitchShift">
-            <span>PitchShift</span>
-            <div class="change-value">
-                <p>Pitch</p>
-                <input type="range" id="pitch" class="slider" min="-36" max="36" step="0.0001">
-            </div>
-            <div class="change-value">
-                <p>Wet</p>
-                <input type="range" id="wet" class="slider" min="0" max="100">
-            </div>
-        </div>
+      </div>
+    </div>
+    <div id="amp">
+      <span>Amplifier</span>
+      <div class="change-value">
+        <label for="amp-volume">Volume</label>
+        <input type="range" id="amp-volume" class="slider" min="-24" max="12" step="2">
+      </div>
     </div>
 
-    <div class="group">
-        <div id="envelope">
-            <span>Amplitude Envelope</span>
-            <div class="change-value">
-                <p>Envelope Attack</p>
-                <input type="range" id="env-attack" class="slider" min="0" max="5" step="0.01">
-            </div>
+  </div>
 
-            <div class="change-value">
-                <p>Envelope Decay</p>
-                <input type="range" id="env-decay" class="slider" min="0" max="5" step="0.01">
-            </div>
-
-            <div class="change-value">
-                <p>Envelope Sustain</p>
-                <input type="range" id="env-sustain" class="slider" min="1" max="100">
-            </div>
-
-            <div class="change-value">
-                <p>Envelope Release</p>
-                <input type="range" id="env-release" class="slider" min="1" max="10">
-            </div>
-        </div>
+  <div class="group">
+    <div id="filter">
+      <span>Filter</span>
+      <div class="change-value">
+        <label for="filter-freq">Frequency</label>
+        <input type="range" id="filter-freq" class="slider" min="0" max="20" step="1">
+      </div>
+      <div class="change-value">
+        <label for="filter-base-freq">Base Frequency</label>
+        <input type="range" id="filter-base-freq" class="slider" min="100" max="3900">
+      </div>
+      <div class="change-value">
+        <label for="filter-octaves">Octaves</label>
+        <input type="range" id="filter-octaves" class="slider" min="0.5" max="5" step="0.5">
+      </div>
+      <div class="change-value">
+        <label for="filter-depth">Depth</label>
+        <input type="range" id="filter-depth" class="slider" min="0.5" max="1" step="0.1">
+      </div>
     </div>
-
-    <div class="group">
-        <div id="lfo">
-            <span>LFO</span>
-            <div class="change-value">
-                <p>Frequency</p>
-                <input type="range" id="lfo-freq" class="slider" min="10" max="1000">
-            </div>
-            <div class="change-value">
-                <p>Amplitude</p>
-                <input type="range" id="lfo-amp" class="slider" min="0" max="100">
-            </div>
-            <div class="change-value">
-                <p>Type</p>
-                <div class="change-value-button">
-                    <input type="button" id="lfo-sine" class="button" value="sine"/>
-                    <input type="button" id="lfo-square" class="button" value="square"/>
-                    <input type="button" id="lfo-triangle" class="button" value="triangle"/>
-                    <input type="button" id="lfo-sawtooth" class="button" value="sawtooth"/>
-                </div>
-            </div>
-        </div>
-        <div id="amp">
-            <span>Amplifier</span>
-            <div class="change-value">
-                <p>Volume</p>
-                <input type="range" id="amp-volume" class="slider" min="-24" max="12" step="2">
-            </div>
-        </div>
-
-    </div>
-
-    <div class="group">
-        <div id="filter">
-            <span>Filter</span>
-            <div class="change-value">
-                <p>Frequency</p>
-                <input type="range" id="filter-freq" class="slider" min="0" max="20" step="1">
-            </div>
-            <div class="change-value">
-                <p>Base Frequency</p>
-                <input type="range" id="filter-baseFreq" class="slider" min="100" max="3900">
-            </div>
-            <div class="change-value">
-                <p>Octaves</p>
-                <input type="range" id="filter-octaves" class="slider" min="0.5" max="5" step="0.5">
-            </div>
-            <div class="change-value">
-                <p>Depth</p>
-                <input type="range" id="filter-depth" class="slider" min="0.5" max="1" step="0.1">
-            </div>
-        </div>
-    </div>
+  </div>
 </section>
 
 
-
 <div id="section-play">
-    <div>
-        <button class="button" id="toggle">
-            Play / Stop
-        </button>
-    </div>
+  <div>
+    <button class="button" id="toggle">
+      Play / Stop
+    </button>
+  </div>
 </div>
-
 
 
 <script src="index.js"></script>

@@ -1,0 +1,109 @@
+@import "~bulma";
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+#keyboard {
+  height: 120px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 50px 50px 20px 50px;
+
+  .key {
+    flex: 0 0 40px;
+    border-radius: 3px;
+    position: relative;
+
+    &:before {
+      content: attr(data-name);
+      display: block;
+      font-size: 15px;
+      vertical-align: baseline;
+    }
+  }
+
+  .black {
+    flex-basis: 0;
+    height: 100%;
+
+    &:before {
+      background: #333;
+      color: #fff;
+      position: absolute;
+      width: 30px;
+      padding-top: 60px;
+      z-index: 10;
+      top: 0;
+      left: -15px;
+    }
+  }
+
+  .white {
+    height: 100%;
+    border: 1px solid #333;
+
+    &:before {
+      padding-top: 100px;
+    }
+  }
+}
+
+#panel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 0 50px 0 50px;
+  font-size: 14px;
+
+  > div {
+    margin: 0 30px 0 30px;
+    width: 100%;
+  }
+}
+
+.group > div {
+  margin-top: 20px;
+}
+
+.change-value {
+  margin-top: 15px;
+
+  > p {
+    padding-bottom: 5px;
+  }
+}
+
+
+.change-value-button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  width: 100%;
+  margin-left: 5px;
+}
+
+#section-play {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+.slider {
+  width: 100%;
+}
+
+span {
+  font-size: 18px;
+}
+

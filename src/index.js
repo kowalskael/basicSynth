@@ -1,5 +1,4 @@
 import * as Tone from 'tone';
-import * as Bulma from 'bulma';
 
 const gain = new Tone.Gain();
 gain.toMaster();
@@ -27,7 +26,7 @@ filter.connect(amp).sync().start();
 
 const $filterFreq = document.querySelector('#filter-freq');
 $filterFreq.addEventListener('input', () => filter.frequency.value = $filterFreq.value);
-const $filterBaseFreq = document.querySelector('#filter-baseFreq');
+const $filterBaseFreq = document.querySelector('#filter-base-freq');
 $filterBaseFreq.addEventListener('input', () => filter.baseFrequency = $filterBaseFreq.value);
 const $filterOctaves = document.querySelector('#filter-octaves');
 $filterOctaves.addEventListener('input', () => filter.octaves = $filterOctaves.value);
@@ -60,15 +59,18 @@ $oscSawtooth.addEventListener('click', () => osc.type = 'sawtooth');
 const $oscPartialCounts = document.querySelector('#osc-partials');
 $oscPartialCounts.addEventListener('input', () => osc.partialCount = $oscPartialCounts.value);
 
-const $keyFreq = document.querySelector('#keyboard').childNodes;
+const indexToFreq = index => 87.31 * Math.pow(Math.pow(2, 1 / 12), index + 1);
 
-for (let i = 0; i < $keyFreq.length; i++) {
-	$keyFreq[0].value = 87.31;
-	if (i > 0) {
-		$keyFreq[i].value = $keyFreq[0].value * Math.pow(Math.pow(2, 1/12), i);
-	}
-	$keyFreq[i].addEventListener('click', () => osc.frequency.value = $keyFreq[i].value);
-}
+const $keyFreq = [...document.querySelectorAll('#keyboard div')];
+
+$keyFreq.forEach((key, index) => key.addEventListener('click', () => osc.frequency.value = indexToFreq(index)));
+
+const keyCodes = $keyFreq.map(div => Number(div.getAttribute('data-key')));
+
+window.addEventListener('keydown', e => {
+  const index = keyCodes.indexOf(e.keyCode);
+  osc.frequency.value = indexToFreq(index);
+});
 
 const lfo = new Tone.LFO(400, 0, 1);
 lfo.connect(ampEnv);
@@ -89,15 +91,14 @@ $lfoSawtooth.addEventListener('click', () => lfo.type = 'sawtooth');
 
 const $toggle = document.querySelector('#toggle');
 $toggle.addEventListener('click', function() {
-	ampEnv.tiggerAttack = !ampEnv.tiggerAttack;
-	Tone.Transport.Start = !Tone.Transport.Start;
-	if (ampEnv.tiggerAttack && Tone.Transport.Start) {
-		ampEnv.triggerAttack();
-		Tone.Transport.start();
-	}
-	else {
-		ampEnv.triggerRelease();
-		Tone.Transport.stop();
-	}
+  ampEnv.tiggerAttack = !ampEnv.tiggerAttack;
+  Tone.Transport.Start = !Tone.Transport.Start;
+  if (ampEnv.tiggerAttack && Tone.Transport.Start) {
+    ampEnv.triggerAttack();
+    Tone.Transport.start();
+  } else {
+    ampEnv.triggerRelease();
+    Tone.Transport.stop();
+  }
 
 });

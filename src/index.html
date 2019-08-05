@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="styles.scss">
 </head>
 <body>
+<canvas id="c"></canvas>
 <section id="keyboard">
   <div class="white key" data-key="KeyQ" data-name="Cl"></div>
   <div class="black key" data-key="Digit2" data-name="C#l"></div>
@@ -66,7 +67,7 @@
       </div>
       <div class="change-value">
         <label for="wet">Wet</label>
-        <input type="range" id="wet" class="slider" min="0" max="100">
+        <input type="range" id="wet" class="slider" min="0" max="1" step="0.1">
       </div>
     </div>
   </div>
@@ -104,8 +105,8 @@
         <input type="range" id="lfo-freq" class="slider" min="10" max="1000">
       </div>
       <div class="change-value">
-        <label for="lfo-amp">Amplitude</label>
-        <input type="range" id="lfo-amp" class="slider" min="0" max="100">
+        <label for="lfo-phase">Phase</label>
+        <input type="range" id="lfo-phase" class="slider" min="-50" max="100">
       </div>
       <div class="change-value">
         <p>Type</p>

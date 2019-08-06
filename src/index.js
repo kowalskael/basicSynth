@@ -1,4 +1,64 @@
 import * as Tone from 'tone';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import obj from './assets/elsynth_hd.gltf';
+
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
+
+const camera = new THREE.PerspectiveCamera(50, 2, 0.1, 1000);
+camera.position.set(0, 0, 50);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000000);
+
+const controls = new OrbitControls( camera, renderer.domElement);
+
+controls.screenSpacePanning = false;
+controls.minDistance = 10;
+controls.maxDistance = 80;
+controls.maxAzimuthAngle = Math.PI / 3;
+controls.minAzimuthAngle = - Math.PI / 5;
+controls.maxPolarAngle = Math.PI / 1.5;
+controls.minPolarAngle = Math.PI / 3;
+controls.update();
+
+const spotLight = new THREE.SpotLight( 0xb5b5b5);
+spotLight.position.set( 0, 1000, 0 );
+spotLight.penumbra = 2;
+scene.add(spotLight);
+
+const loadModel = new THREE.Object3D();
+scene.add(loadModel);
+
+const loader = new GLTFLoader();
+
+const mesh = new THREE.Object3D();
+loader.load(obj, gltf => {
+	mesh.add(gltf.scene);
+	loadModel.add(mesh);
+});
+
+mesh.rotation.x = 0.7;
+
+const render = () => {
+	renderer.render(scene, camera);
+	requestAnimationFrame(render);
+};
+
+const resize = () => {
+	const { clientWidth, clientHeight } = canvas;
+	renderer.setSize(clientWidth, clientHeight, false);
+	camera.aspect = clientWidth / clientHeight;
+	renderer.setPixelRatio(window.devicePixelRatio);
+	controls.update();
+	camera.updateProjectionMatrix();
+};
+
+
+resize();
+render();
 
 const gain = new Tone.Gain();
 gain.toMaster();
@@ -42,7 +102,7 @@ pitch.connect(ampEnv);
 const $pitch = document.querySelector('#pitch');
 $pitch.addEventListener('input', () => pitch.pitch = $pitch.value);
 const $wet = document.querySelector('#wet');
-$wet.addEventListener('input', () => pitch.wet.value = $wet.value);
+$wet.addEventListener('input', () => pitch.delayTime.value = $wet.value);
 
 const osc = new Tone.Oscillator(20, 'sine');
 osc.fan(ampEnv, filter, pitch);
@@ -68,9 +128,9 @@ $keyFreq.forEach((key, index) => key.addEventListener('click', () => osc.frequen
 const keyCodes = $keyFreq.map(div => div.getAttribute('data-key'));
 
 window.addEventListener('keydown', event => {
-  console.log(event.code);
-  const index = keyCodes.indexOf(event.code);
-  osc.frequency.value = indexToFreq(index);
+	console.log(event.code);
+	const index = keyCodes.indexOf(event.code);
+	osc.frequency.value = indexToFreq(index);
 });
 
 const lfo = new Tone.LFO(400, 0, 1);
@@ -79,8 +139,8 @@ lfo.sync().start();
 
 const $lfoFreq = document.querySelector('#lfo-freq');
 $lfoFreq.addEventListener('input', () => lfo.frequency.value = $lfoFreq.value);
-const $lfoAmp = document.querySelector('#lfo-amp');
-$lfoAmp.addEventListener('input', () => lfo.amplitude.value = $lfoAmp.value);
+const $lfoPhase = document.querySelector('#lfo-phase');
+$lfoPhase.addEventListener('input', () => lfo.phase = $lfoPhase.value);
 const $lfoSine = document.querySelector('#lfo-sine');
 $lfoSine.addEventListener('click', () => lfo.type = 'sine');
 const $lfoSquare = document.querySelector('#lfo-square');
@@ -91,15 +151,15 @@ const $lfoSawtooth = document.querySelector('#lfo-sawtooth');
 $lfoSawtooth.addEventListener('click', () => lfo.type = 'sawtooth');
 
 const $toggle = document.querySelector('#toggle');
-$toggle.addEventListener('click', function() {
-  ampEnv.tiggerAttack = !ampEnv.tiggerAttack;
-  Tone.Transport.Start = !Tone.Transport.Start;
-  if (ampEnv.tiggerAttack && Tone.Transport.Start) {
-    ampEnv.triggerAttack();
-    Tone.Transport.start();
-  } else {
-    ampEnv.triggerRelease();
-    Tone.Transport.stop();
-  }
+$toggle.addEventListener('click', function () {
+	ampEnv.tiggerAttack = !ampEnv.tiggerAttack;
+	Tone.Transport.Start = !Tone.Transport.Start;
+	if (ampEnv.tiggerAttack && Tone.Transport.Start) {
+		ampEnv.triggerAttack();
+		Tone.Transport.start();
+	} else {
+		ampEnv.triggerRelease();
+		Tone.Transport.stop();
+	}
 
 });

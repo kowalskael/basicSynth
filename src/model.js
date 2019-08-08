@@ -45,8 +45,8 @@ scene.add(loadModel);
 
 const loader = new GLTFLoader();
 
-let sustain;
-let decay;
+let objects = [];
+
 let attack;
 let release;
 
@@ -54,34 +54,30 @@ const mesh = new THREE.Object3D();
 loader.load(obj, gltf => {
   mesh.add(gltf.scene);
   loadModel.add(mesh);
-  console.log(dumpObject(mesh).join('\n'));
-  sustain = mesh.getObjectByName('ENV_Sustain');
-  decay = mesh.getObjectByName('ENV_Decay');
+
   attack = mesh.getObjectByName('ENV_Atack');
   release = mesh.getObjectByName('ENV_Release');
+  objects.push(attack);
+  objects.push(release);
 });
 
 mesh.rotation.x = 0.7;
 
-const render = (time) => {
-  time *= 0.001;
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
 
-  if (sustain) {
-    sustain.rotation.y = time + 0.3;
+function onMouseMove( event ) {
+  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+}
+
+const render = () => {
+
+  raycaster.setFromCamera( mouse, camera );
+  var intersects = raycaster.intersectObjects( objects, true );
+  for ( var i = 0; i < intersects.length; i++ ) {
+    intersects[ i ].object.material.color.set( 0xff0000 );
   }
-
-  if (decay) {
-    decay.rotation.y = time - 3;
-  }
-
-  if (release) {
-    release.rotation.y = time;
-  }
-
-  if (attack) {
-    attack.rotation.y = time * 0.5;
-  }
-
   renderer.render(scene, camera);
   requestAnimationFrame(render);
 };
@@ -95,7 +91,12 @@ const resize = () => {
   camera.updateProjectionMatrix();
 };
 
+THREE.DefaultLoadingManager.onLoad = () => {
+  resize();
+  render();
 
-resize();
-render();
+};
 
+
+window.addEventListener('mousemove', onMouseMove, false);
+window.requestAnimationFrame(render);

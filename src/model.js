@@ -33,6 +33,8 @@ scene.add(loadModel);
 
 const loader = new GLTFLoader();
 
+let objects = [];
+
 let attack;
 let release;
 
@@ -41,16 +43,20 @@ loader.load(obj, gltf => {
   mesh.add(gltf.scene);
   loadModel.add(mesh);
   attack = mesh.getObjectByName('ENV_Atack');
+  release = mesh.getObjectByName('ENV_Release');
+  objects.push(attack);
+  objects.push(release);
 
   scene.updateMatrixWorld(true);
   var position = new THREE.Vector3();
   position.getPositionFromMatrix( attack.matrixWorld );
   console.log(position.x + ',' + position.y + ',' + position.z);
-
-  release = mesh.getObjectByName('ENV_Release');
 });
 
 mesh.rotation.x = 1.15;
+
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
 
 let rotation = 0;
 
@@ -60,6 +66,9 @@ const onMouseDown = () => {
 };
 
 const onMouseMove = event => {
+  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
   let x;
   if (event.type === 'touchmove') {
     if (event.touches.length !== 1) {
@@ -71,8 +80,7 @@ const onMouseMove = event => {
   }
 
   rotation = x * 0.05;
-  attack.rotation.y += (rotation - attack.rotation.y);
-
+  attack.rotation.y += rotation * 0.001;
 };
 
 const onMouseUp = () => {
@@ -80,7 +88,15 @@ const onMouseUp = () => {
   document.removeEventListener( 'mouseup', onMouseUp);
 }
 
+
 const render = () => {
+
+  raycaster.setFromCamera( mouse, camera );
+  var intersects = raycaster.intersectObjects( objects, true );
+  for ( var i = 0; i < intersects.length; i++ ) {
+    intersects[ i ].object.material.color.set( 0xff0000 );
+  }
+
   renderer.render(scene, camera);
   requestAnimationFrame(render);
 };
@@ -93,12 +109,15 @@ const resize = () => {
   camera.updateProjectionMatrix();
 };
 
+
 THREE.DefaultLoadingManager.onLoad = () => {
   document.addEventListener( 'mousedown', onMouseDown);
-
   window.addEventListener('resize', resize);
 
   resize();
   render();
 };
+
+window.addEventListener( 'onclick', onMouseMove);
+window.requestAnimationFrame(render);
 

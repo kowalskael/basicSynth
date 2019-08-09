@@ -67,11 +67,11 @@ const onMouseMove = event => {
     }
     x = event.touches[0].clientX;
   } else {
-    x = event.clientX - (window.innerWidth / 2);
+    x = event.clientX;
   }
 
-  rotation = x;
-  attack.rotation.y += rotation * 0.001;
+  rotation = x * 0.05;
+  attack.rotation.y += (rotation - attack.rotation.y);
 
 };
 

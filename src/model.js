@@ -61,14 +61,14 @@ var mouse = new THREE.Vector2();
 let rotation = 0;
 
 const onMouseDown = () => {
+  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
   document.addEventListener( 'mousemove', onMouseMove);
   document.addEventListener( 'mouseup', onMouseUp );
 };
 
 const onMouseMove = event => {
-  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
   let x;
   if (event.type === 'touchmove') {
     if (event.touches.length !== 1) {
@@ -80,7 +80,7 @@ const onMouseMove = event => {
   }
 
   rotation = x * 0.05;
-  attack.rotation.y += rotation * 0.001;
+  attack.rotation.y += (rotation - attack.rotation.y);
 };
 
 const onMouseUp = () => {
@@ -118,6 +118,6 @@ THREE.DefaultLoadingManager.onLoad = () => {
   render();
 };
 
-window.addEventListener( 'onclick', onMouseMove);
+window.addEventListener( 'mousedown', onMouseDown);
 window.requestAnimationFrame(render);
 

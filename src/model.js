@@ -6,7 +6,6 @@ let targetRotation = 0;
 let targetRotationOnMouseDown = 0;
 let mouseX = 0;
 let mouseXOnMouseDown = 0;
-const windowHalfX = window.innerWidth / 2;
 
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
@@ -50,48 +49,44 @@ loader.load(obj, gltf => {
   release = mesh.getObjectByName('ENV_Release');
 });
 
-
 mesh.rotation.x = 1.15;
 
-document.addEventListener( 'mousedown', onDocumentMouseDown);
-document.addEventListener( 'touchstart', onDocumentTouchStart);
-document.addEventListener( 'touchmove', onDocumentTouchMove);
+document.addEventListener( 'mousedown', onMouseDown);
+document.addEventListener( 'touchstart', onTouchStart);
+document.addEventListener( 'touchmove', onTouchMove);
 
-function onDocumentMouseDown( event ) {
-  document.addEventListener( 'mousemove', onDocumentMouseMove);
-  document.addEventListener( 'mouseup', onDocumentMouseUp );
-  document.addEventListener( 'mouseout', onDocumentMouseOut);
+function onMouseDown( event ) {
+  document.addEventListener( 'mousemove', onMouseMove);
+  document.addEventListener( 'mouseup', onMouseUp );
   mouseXOnMouseDown = event.clientX;
   targetRotationOnMouseDown = targetRotation;
 }
-function onDocumentMouseMove( event ) {
+function onMouseMove( event ) {
   mouseX = event.clientX;
   targetRotation = targetRotationOnMouseDown + (mouseX - mouseXOnMouseDown) * 0.05;
 }
-function onDocumentMouseUp() {
-  document.removeEventListener( 'mousemove', onDocumentMouseMove);
-}
-function onDocumentMouseOut() {
-  document.removeEventListener('mousemove', onDocumentMouseMove);
+function onMouseUp() {
+  document.removeEventListener( 'mousemove', onMouseMove);
 }
 
-function onDocumentTouchStart( event ) {
+function onTouchStart( event ) {
   if ( event.touches.length == 1 ) {
     event.preventDefault();
-    mouseXOnMouseDown = event.touches[ 0 ].pageX - windowHalfX;
+    mouseXOnMouseDown = event.touches[ 0 ].pageX;
     targetRotationOnMouseDown = targetRotation;
   }
 }
-function onDocumentTouchMove( event ) {
+function onTouchMove( event ) {
   if ( event.touches.length == 1 ) {
     event.preventDefault();
-    mouseX = event.touches[ 0 ].pageX - windowHalfX;
+    mouseX = event.touches[ 0 ].pageX;
     targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) ;
   }
 }
 
 const render = () => {
   attack.rotation.y += ( targetRotation - attack.rotation.y );
+  console.log(attack.rotation.y);
   renderer.render(scene, camera);
   requestAnimationFrame(render);
 };

@@ -2,11 +2,6 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import obj from './assets/elsynth_1.gltf';
 
-let targetRotation = 0;
-let targetRotationOnMouseDown = 0;
-let mouseX = 0;
-let mouseXOnMouseDown = 0;
-
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
 
@@ -46,47 +41,46 @@ loader.load(obj, gltf => {
   mesh.add(gltf.scene);
   loadModel.add(mesh);
   attack = mesh.getObjectByName('ENV_Atack');
+
+  scene.updateMatrixWorld(true);
+  var position = new THREE.Vector3();
+  position.getPositionFromMatrix( attack.matrixWorld );
+  console.log(position.x + ',' + position.y + ',' + position.z);
+
   release = mesh.getObjectByName('ENV_Release');
 });
 
 mesh.rotation.x = 1.15;
 
-document.addEventListener( 'mousedown', onMouseDown);
-document.addEventListener( 'touchstart', onTouchStart);
-document.addEventListener( 'touchmove', onTouchMove);
+let rotation = 0;
 
-function onMouseDown( event ) {
+const onMouseDown = () => {
   document.addEventListener( 'mousemove', onMouseMove);
   document.addEventListener( 'mouseup', onMouseUp );
-  mouseXOnMouseDown = event.clientX;
-  targetRotationOnMouseDown = targetRotation;
-}
-function onMouseMove( event ) {
-  mouseX = event.clientX;
-  targetRotation = targetRotationOnMouseDown + (mouseX - mouseXOnMouseDown) * 0.05;
-}
-function onMouseUp() {
-  document.removeEventListener( 'mousemove', onMouseMove);
-}
+};
 
-function onTouchStart( event ) {
-  if ( event.touches.length == 1 ) {
-    event.preventDefault();
-    mouseXOnMouseDown = event.touches[ 0 ].pageX;
-    targetRotationOnMouseDown = targetRotation;
+const onMouseMove = event => {
+  let x;
+  if (event.type === 'touchmove') {
+    if (event.touches.length !== 1) {
+      return;
+    }
+    x = event.touches[0].clientX;
+  } else {
+    x = event.clientX - (window.innerWidth / 2);
   }
-}
-function onTouchMove( event ) {
-  if ( event.touches.length == 1 ) {
-    event.preventDefault();
-    mouseX = event.touches[ 0 ].pageX;
-    targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) ;
-  }
+
+  rotation = x;
+  attack.rotation.y += rotation * 0.001;
+
+};
+
+const onMouseUp = () => {
+  document.removeEventListener( 'mousemove', onMouseMove);
+  document.removeEventListener( 'mouseup', onMouseUp);
 }
 
 const render = () => {
-  attack.rotation.y += ( targetRotation - attack.rotation.y );
-  console.log(attack.rotation.y);
   renderer.render(scene, camera);
   requestAnimationFrame(render);
 };
@@ -96,11 +90,12 @@ const resize = () => {
   renderer.setSize(clientWidth, clientHeight, false);
   camera.aspect = clientWidth / clientHeight;
   renderer.setPixelRatio(window.devicePixelRatio);
-
   camera.updateProjectionMatrix();
 };
 
 THREE.DefaultLoadingManager.onLoad = () => {
+  document.addEventListener( 'mousedown', onMouseDown);
+
   window.addEventListener('resize', resize);
 
   resize();

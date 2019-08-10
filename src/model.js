@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import obj from './assets/elsynth_1.gltf';
 import { dumpObject } from './dumpObject';
+import { degToRad } from './math';
 import { Synthesizer } from './Synthesizer';
 
 const canvas = document.getElementById('c');
@@ -20,7 +21,7 @@ scene.add(spotLight);
 
 const loader = new GLTFLoader();
 loader.load(obj, gltf => {
-  gltf.scene.rotation.x = 1.15;
+  gltf.scene.rotation.x = degToRad(70);
   scene.add(gltf.scene);
   scene.updateMatrixWorld(true);
 });

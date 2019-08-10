@@ -84,7 +84,14 @@ export class Synthesizer {
       mapRange(event.clientX, 0, this.canvas.clientWidth, -1, 1),
       mapRange(event.clientY, 0, this.canvas.clientHeight, -1, 1),
     );
-    // TODO: write a code ;)
+
+
+    const x = event.clientX - this.currentObjectCenter.x;
+    const y = event.clientY - this.currentObjectCenter.y;
+
+    this.currentObject.rotation.y = -Math.atan2(y, x);
+    console.log(this.currentObject.rotation.y);
+    
   };
 
   onMouseUp = () => {

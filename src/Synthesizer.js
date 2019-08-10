@@ -4,6 +4,7 @@ import { mapRange } from './math';
 export class Synthesizer {
   raycaster = new THREE.Raycaster();
   mouseVec = new THREE.Vector2();
+  currentObjectCenter = new THREE.Vector2();
   isMouseDown = false;
 
   constructor(scene, camera, canvas) {
@@ -62,7 +63,17 @@ export class Synthesizer {
     const intersects = this.raycaster.intersectObjects(this.allObjects);
     if (intersects && intersects.length > 0) {
       this.currentObject = intersects[0].object;
+      const vector = new THREE.Vector3();
+      vector.setFromMatrixPosition(this.currentObject.matrixWorld);
+      vector.project(this.camera);
+
+      this.currentObjectCenter.set(
+        mapRange(vector.x, -1, 1, 0, this.canvas.clientWidth),
+        mapRange(vector.y, -1, 1, this.canvas.clientHeight, 0),
+      );
+
       console.log(this.currentObject.name);
+      console.log(this.currentObjectCenter);
     }
   };
 

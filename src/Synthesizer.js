@@ -71,17 +71,17 @@ export class Synthesizer {
         mapRange(vector.x, -1, 1, 0, this.canvas.clientWidth),
         mapRange(vector.y, -1, 1, this.canvas.clientHeight, 0),
       );
-
-      console.log(this.currentObject.name);
-      console.log(this.currentObjectCenter);
     }
   };
 
   onMouseMove = event => {
     if (!this.isMouseDown) return;
-    const x = this.currentObjectCenter.x - event.clientX;
-    const y = this.currentObjectCenter.y - event.clientY;
-    this.currentObject.rotation.y = -Math.atan2(y, x) - Math.PI;
+
+    if (this.rotators.indexOf(this.currentObject) > -1) {
+      const x = this.currentObjectCenter.x - event.clientX;
+      const y = this.currentObjectCenter.y - event.clientY;
+      this.currentObject.rotation.y = -Math.atan2(y, x) + Math.PI;
+    }
   };
 
   onMouseUp = () => {

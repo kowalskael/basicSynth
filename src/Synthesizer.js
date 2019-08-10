@@ -63,6 +63,7 @@ export class Synthesizer {
     const intersects = this.raycaster.intersectObjects(this.allObjects);
     if (intersects && intersects.length > 0) {
       this.currentObject = intersects[0].object;
+      // console.log(this.currentObject.name)
       const vector = new THREE.Vector3();
       vector.setFromMatrixPosition(this.currentObject.matrixWorld);
       vector.project(this.camera);
@@ -71,6 +72,11 @@ export class Synthesizer {
         mapRange(vector.x, -1, 1, 0, this.canvas.clientWidth),
         mapRange(vector.y, -1, 1, this.canvas.clientHeight, 0),
       );
+    }
+
+    if (this.currentObject && this.keys.indexOf(this.currentObject) > -1) {
+      console.log(this.currentObject.name);
+      this.currentObject.rotation.x = 0.1;
     }
   };
 
@@ -86,6 +92,9 @@ export class Synthesizer {
 
   onMouseUp = () => {
     this.isMouseDown = false;
+    if (this.currentObject && this.keys.indexOf(this.currentObject) > -1) {
+      this.currentObject.rotation.x = 0;
+    }
     this.currentObject = null;
   };
 

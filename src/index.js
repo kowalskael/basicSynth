@@ -69,7 +69,6 @@ $keyFreq.forEach((key, index) => key.addEventListener('click', () => osc.frequen
 const keyCodes = $keyFreq.map(div => div.getAttribute('data-key'));
 
 window.addEventListener('keydown', event => {
-	console.log(event.code);
 	const index = keyCodes.indexOf(event.code);
 	osc.frequency.value = indexToFreq(index);
 });

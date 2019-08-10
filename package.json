@@ -11,6 +11,8 @@
   "author": "Elżbieta Kowalska <kowalska.el@gmail.com",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "parcel": "^1.12.3",
     "sass": "^1.22.9"
   },

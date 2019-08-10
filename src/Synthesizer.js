@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { mapRange } from './math';
+import { degToRad, mapRange } from './math';
 
 export class Synthesizer {
   raycaster = new THREE.Raycaster();
@@ -85,18 +85,36 @@ export class Synthesizer {
       mapRange(event.clientY, 0, this.canvas.clientHeight, -1, 1),
     );
 
+    if (this.rotators.indexOf(this.currentObject) > -1) {
+      const x = event.clientX - this.currentObjectCenter.x;
+      const y = event.clientY - this.currentObjectCenter.y;
 
-    const x = event.clientX - this.currentObjectCenter.x;
-    const y = event.clientY - this.currentObjectCenter.y;
+      this.currentObject.rotation.y = -Math.atan2(y, x);
+      console.log(this.currentObject.rotation.y);
+    }
+    if (this.currentObject) {
+      if (this.keys.indexOf(this.currentObject) > -1) {
+        this.currentObject.rotation.x = 0.05;
+      }
 
-    this.currentObject.rotation.y = -Math.atan2(y, x);
-    console.log(this.currentObject.rotation.y);
+      if (this.currentObject === this.pitchShiftSwitch) {
+        if (this.pitchShiftSwitch.rotation.x > 0) {
+          this.pitchShiftSwitch.rotation.x = degToRad(-40);
+        } else {
+          this.pitchShiftSwitch.rotation.x = degToRad(40);
+        }
+      }
+    };
     
   };
 
   onMouseUp = () => {
     this.isMouseDown = false;
+    if (this.currentObject && this.keys.indexOf(this.currentObject) > -1) {
+      this.currentObject.rotation.x = 0;
+    }
     this.currentObject = null;
+
   };
 
   update() {

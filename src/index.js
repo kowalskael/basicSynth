@@ -1,5 +1,5 @@
 import * as Tone from 'tone';
-import { model } from './model.js';
+import { model } from './model';
 
 const gain = new Tone.Gain();
 gain.toMaster();

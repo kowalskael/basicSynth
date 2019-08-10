@@ -79,12 +79,9 @@ export class Synthesizer {
 
   onMouseMove = event => {
     if (!this.isMouseDown) return;
-
-    this.mouseVec.set(
-      mapRange(event.clientX, 0, this.canvas.clientWidth, -1, 1),
-      mapRange(event.clientY, 0, this.canvas.clientHeight, -1, 1),
-    );
-    // TODO: write a code ;)
+    const x = this.currentObjectCenter.x - event.clientX;
+    const y = this.currentObjectCenter.y - event.clientY;
+    this.currentObject.rotation.y = -Math.atan2(y, x) - Math.PI;
   };
 
   onMouseUp = () => {

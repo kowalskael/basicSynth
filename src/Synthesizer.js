@@ -63,7 +63,6 @@ export class Synthesizer {
     const intersects = this.raycaster.intersectObjects(this.allObjects);
     if (intersects && intersects.length > 0) {
       this.currentObject = intersects[0].object;
-      // console.log(this.currentObject.name)
       const vector = new THREE.Vector3();
       vector.setFromMatrixPosition(this.currentObject.matrixWorld);
       vector.project(this.camera);
@@ -74,8 +73,8 @@ export class Synthesizer {
       );
     }
 
+    // key down
     if (this.currentObject && this.keys.indexOf(this.currentObject) > -1) {
-      console.log(this.currentObject.name);
       this.currentObject.rotation.x = 0.1;
     }
   };
@@ -83,6 +82,7 @@ export class Synthesizer {
   onMouseMove = event => {
     if (!this.isMouseDown) return;
 
+    // rotators
     if (this.rotators.indexOf(this.currentObject) > -1) {
       const x = this.currentObjectCenter.x - event.clientX;
       const y = this.currentObjectCenter.y - event.clientY;
@@ -92,6 +92,8 @@ export class Synthesizer {
 
   onMouseUp = () => {
     this.isMouseDown = false;
+
+    // key up
     if (this.currentObject && this.keys.indexOf(this.currentObject) > -1) {
       this.currentObject.rotation.x = 0;
     }

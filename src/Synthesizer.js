@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { clamp, degToRad, mapRange } from './math';
+import { norm, clamp, degToRad, mapRange } from './math';
 import * as Tone from 'tone';
 
 
@@ -60,42 +60,46 @@ export class Synthesizer {
     document.addEventListener('mousemove', this.onMouseMove);
     document.addEventListener('mouseup', this.onMouseUp);
 
-    const gain = new Tone.Gain();
-    gain.toMaster();
+    this.gain = new Tone.Gain();
+    this.gain.toMaster();
 
-    const ampEnv = new Tone.AmplitudeEnvelope();
-    ampEnv.connect(gain);
+    this.ampEnv = new Tone.AmplitudeEnvelope();
+    this.ampEnv.connect(this.gain);
 
-    const amp = new Tone.Volume(0);
-    amp.connect(ampEnv);
+    this.amp = new Tone.Volume(0);
+    this.amp.connect(this.ampEnv);
 
-    const filter = new Tone.AutoFilter(2, 0.6);
-    filter.connect(amp).sync().start();
+    this.filter = new Tone.AutoFilter(2, 0.6);
+    this.filter.connect(this.amp).sync().start();
 
-    const filterEnv = new Tone.Envelope();
-    filterEnv.connect(filter);
+    this.filterEnv = new Tone.Envelope();
+    this.filterEnv.connect(this.filter);
 
-    const pitch = new Tone.PitchShift();
-    pitch.connect(ampEnv);
+    this.pitch = new Tone.PitchShift();
+    this.pitch.connect(this.ampEnv);
 
-    const osc = new Tone.Oscillator(20, 'sine');
-    osc.fan(ampEnv, filter, pitch);
-    osc.start();
+    this.osc = new Tone.Oscillator({
+      type  : 'sine' ,
+      frequency  : 440 ,
+      partialCount  : 1
+    });
+    this.osc.fan(this.ampEnv, this.filter, this.pitch);
+    this.osc.start();
 
-    const lfo = new Tone.LFO(400, 0, 1);
-    lfo.connect(ampEnv);
-    lfo.sync().start();
+    this.lfo = new Tone.LFO(400, 0, 1);
+    this.lfo.connect(this.ampEnv);
+    this.lfo.sync().start();
 
     const $toggle = document.querySelector('#toggle-1');
     $toggle.addEventListener('click', function() {
-      ampEnv.tiggerAttack = !ampEnv.tiggerAttack;
-      Tone.Transport.Start = !Tone.Transport.Start;
-      if (ampEnv.tiggerAttack && Tone.Transport.Start) {
-        ampEnv.triggerAttack();
-        Tone.Transport.start();
+      this.ampEnv.tiggerAttack = !this.ampEnv.tiggerAttack;
+      this.Tone.Transport.Start = !this.Tone.Transport.Start;
+      if (this.ampEnv.tiggerAttack && this.Tone.Transport.Start) {
+        this.ampEnv.triggerAttack();
+        this.Tone.Transport.start();
       } else {
-        ampEnv.triggerRelease();
-        Tone.Transport.stop();
+        this.ampEnv.triggerRelease();
+        this.Tone.Transport.stop();
       }
     });
   }
@@ -143,20 +147,24 @@ export class Synthesizer {
       if (this.rotators.indexOf(this.currentObject) > -1) {
         const limit = clamp(angle, degToRad(-120), degToRad(120));
         this.currentObject.rotation.y = limit;
+        const oscFrequency = mapRange(limit, degToRad(-120), degToRad(120), 1000, 20);
+        this.osc.frequency.value = oscFrequency;
+        console.log(this.osc.frequency.value);
       }
 
       // waveRotators
       if (this.waveRotators.indexOf(this.currentObject) > -1) {
-        if (angle > degToRad(-180) && angle < degToRad(-30)) {
+        const limit = clamp(angle, degToRad(-180), degToRad(180));
+        if (limit > degToRad(-180) && limit < degToRad(-30)) {
           this.currentObject.rotation.y = degToRad(-90);
         }
-        if (angle > degToRad(-30) && angle < degToRad(30)) {
+        if (limit > degToRad(-30) && limit < degToRad(30)) {
           this.currentObject.rotation.y = degToRad(-30);
         }
-        if (angle > degToRad(30) && angle < degToRad(90)) {
+        if (limit > degToRad(30) && limit < degToRad(90)) {
           this.currentObject.rotation.y = degToRad(30);
         }
-        if (angle > degToRad(90) && angle < degToRad(180)) {
+        if (limit > degToRad(90) && limit < degToRad(180)) {
           this.currentObject.rotation.y = degToRad(90);
         }
       }

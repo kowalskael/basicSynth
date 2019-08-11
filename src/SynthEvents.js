@@ -6,7 +6,8 @@ import { norm, clamp, degToRad, mapRange } from './math';
 export class SynthEvents extends Synthesizer {
 
 	constructor(scene, camera, canvas) {
-		super(scene, camera, canvas)
+		super(scene, camera, canvas);
+
 		document.addEventListener('mousedown', this.onMouseDown);
 		document.addEventListener('mousemove', this.onMouseMove);
 		document.addEventListener('mouseup', this.onMouseUp);
@@ -73,73 +74,131 @@ export class SynthEvents extends Synthesizer {
 				this.osc.partialCount = Math.round(oscPartialCount);
 			}
 
-			if (this.currentObject === this.rotators[1]) {
+			if (this.currentObject === this.envRotators[0]) {
 				this.currentObject.rotation.y = limit;
-				const ampEnvAttack = mapRange(limit, degToRad(-120), degToRad(120), 5, 0);
-				this.ampEnv.attack = Math.round(ampEnvAttack);
-
-				//for (let i = 0; this.toneRotators.length > i; i++) {
-				//this.toneRotators[i] = Math.round(oscFrequency);
-				//}
-				console.log(this.ampEnv.attack);
+				const ampEnvValue = mapRange(limit, degToRad(-120), degToRad(120), 10, 0);
+				this.ampEnv.attack = Math.round(ampEnvValue);
 			}
 
-			if (this.currentObject === this.rotators[5]) {
+			if (this.currentObject === this.envRotators[1]) {
+				this.currentObject.rotation.y = limit;
+				const ampEnvValue = mapRange(limit, degToRad(-120), degToRad(120), 10, 0);
+				this.ampEnv.decay = Math.round(ampEnvValue);
+			}
+
+			if (this.currentObject === this.envRotators[2]) {
+				this.currentObject.rotation.y = limit;
+				const ampEnvValue = mapRange(limit, degToRad(-120), degToRad(120), 10, 0);
+				this.ampEnv.sustain = Math.round(ampEnvValue);
+			}
+
+			if (this.currentObject === this.envRotators[3]) {
+				this.currentObject.rotation.y = limit;
+				const ampEnvValue = mapRange(limit, degToRad(-120), degToRad(120), 10, 0);
+				this.ampEnv.release = Math.round(ampEnvValue);
+			}
+
+			if (this.currentObject === this.rotators[1]) {
 				this.currentObject.rotation.y = limit;
 				const lfoFreqVal = mapRange(limit, degToRad(-120), degToRad(120), 1000, 10);
 				this.lfo.frequency.value = Math.round(lfoFreqVal);
 			}
 
-			if (this.currentObject === this.rotators[6]) {
+
+			if (this.currentObject === this.rotators[2]) {
 				this.currentObject.rotation.y = limit;
 				const lfoPhase = mapRange(limit, degToRad(-120), degToRad(120), 100, -50);
 				this.lfo.phase.value = Math.round(lfoPhase);
 			}
 
-			if (this.currentObject === this.rotators[7]) {
+			if (this.currentObject === this.rotators[3]) {
 				this.currentObject.rotation.y = limit;
 				const pitchPitch = mapRange(limit, degToRad(-120), degToRad(120), 36, -36);
 				this.pitch.pitch = Math.round(pitchPitch);
 			}
 
-			if (this.currentObject === this.rotators[9]) {
+			if (this.currentObject === this.rotators[5]) {
 				this.currentObject.rotation.y = limit;
 				const filterFreq = mapRange(limit, degToRad(-120), degToRad(120), 20, 0);
 				this.filter.frequency.value = Math.round(filterFreq);
 			}
 
-			if (this.currentObject === this.rotators[10]) {
+			if (this.currentObject === this.rotators[6]) {
 				this.currentObject.rotation.y = limit;
 				const filterOctaves = mapRange(limit, degToRad(-120), degToRad(120), 5, 1);
 				this.filter.octaves = Math.round(filterOctaves);
 			}
 
-			if (this.currentObject === this.rotators[11]) {
+			if (this.currentObject === this.rotators[7]) {
 				this.currentObject.rotation.y = limit;
 				const filterBaseFreq = mapRange(limit, degToRad(-120), degToRad(120), 2000, 100);
 				this.filter.baseFrequency = Math.round(filterBaseFreq);
 			}
 
-			if (this.currentObject === this.rotators[12]) {
+			if (this.currentObject === this.rotators[8]) {
 				this.currentObject.rotation.y = limit;
 				const filterDepth = mapRange(limit, degToRad(-120), degToRad(120), 1, 0.5);
 				this.filter.depth = Math.round(filterDepth);
 			}
 
 			// waveRotators
-			if (this.waveRotators.indexOf(this.currentObject) > -1) {
+			if (this.currentObject === this.waveRotators[0]) {
 				const waveLimit = clamp(angle, degToRad(-180), degToRad(180));
 				if (waveLimit > degToRad(-180) && waveLimit < degToRad(-30)) {
 					this.currentObject.rotation.y = degToRad(-90);
+					this.osc.type = 'sawtooth';
 				}
 				if (waveLimit > degToRad(-30) && waveLimit < degToRad(30)) {
 					this.currentObject.rotation.y = degToRad(-30);
+					this.osc.type = 'square';
 				}
 				if (waveLimit > degToRad(30) && waveLimit < degToRad(90)) {
 					this.currentObject.rotation.y = degToRad(30);
+					this.osc.type = 'triangle';
 				}
 				if (waveLimit > degToRad(90) && waveLimit < degToRad(180)) {
 					this.currentObject.rotation.y = degToRad(90);
+					this.osc.type = 'sine';
+				}
+			}
+
+			if (this.currentObject === this.waveRotators[1]) {
+				const waveLimit = clamp(angle, degToRad(-180), degToRad(180));
+				if (waveLimit > degToRad(-180) && waveLimit < degToRad(-30)) {
+					this.currentObject.rotation.y = degToRad(-90);
+					this.lfo.type = 'sawtooth';
+				}
+				if (waveLimit > degToRad(-30) && waveLimit < degToRad(30)) {
+					this.currentObject.rotation.y = degToRad(-30);
+					this.lfo.type = 'square';
+				}
+				if (waveLimit > degToRad(30) && waveLimit < degToRad(90)) {
+					this.currentObject.rotation.y = degToRad(30);
+					this.lfo.type = 'triangle';
+				}
+				if (waveLimit > degToRad(90) && waveLimit < degToRad(180)) {
+					this.currentObject.rotation.y = degToRad(90);
+					this.lfo.type = 'sine';
+				}
+			}
+
+			if (this.currentObject === this.waveRotators[2]) {
+				const waveLimit = clamp(angle, degToRad(-180), degToRad(180));
+				if (waveLimit > degToRad(-180) && waveLimit < degToRad(-30)) {
+					this.currentObject.rotation.y = degToRad(-90);
+					this.filter.type = 'sawtooth';
+				}
+				if (waveLimit > degToRad(-30) && waveLimit < degToRad(30)) {
+					this.currentObject.rotation.y = degToRad(-30);
+					this.filter.type = 'square';
+				}
+				if (waveLimit > degToRad(30) && waveLimit < degToRad(90)) {
+					this.currentObject.rotation.y = degToRad(30);
+					this.filter.type = 'triangle';
+				}
+				if (waveLimit > degToRad(90) && waveLimit < degToRad(180)) {
+					this.currentObject.rotation.y = degToRad(90);
+					this.filter.type = 'sine';
 				}
 			}
 
@@ -148,7 +207,6 @@ export class SynthEvents extends Synthesizer {
 				this.currentObject.rotation.y = angle;
 				const volume = mapRange(angle, degToRad(-180), degToRad(180), -24, 14);
 				this.amp.volume.value = Math.round(volume);
-				console.log(this.amp.volume.value);
 			}
 
 			// keys
@@ -160,8 +218,10 @@ export class SynthEvents extends Synthesizer {
 			if (this.currentObject === this.pitchShiftSwitch) {
 				if (this.pitchShiftSwitch.rotation.x > 0) {
 					this.pitchShiftSwitch.rotation.x = degToRad(-40);
+					this.pitch.wet.value = 0;
 				} else {
 					this.pitchShiftSwitch.rotation.x = degToRad(40);
+					this.pitch.wet.value = 1;
 				}
 			}
 		}

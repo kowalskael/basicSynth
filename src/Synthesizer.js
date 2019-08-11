@@ -33,11 +33,14 @@ export class Synthesizer {
 
     this.rotators = [
       'OSC_Partial',
-      'ENV_Atack', 'ENV_Decay', 'ENV_Sustain', 'ENV_Release',
       'LFO_Freq', 'LFO_Phase',
       'PSFT_Pitch', 'PSFT_Delay',
       'FLTR_Freq', 'FLTR_Octaves', 'FLTR_BaseFreq', 'FLTR_Depth',
     ].map(rotator => scene.getObjectByName(rotator));
+
+    this.envRotators = [
+      'ENV_Atack', 'ENV_Decay', 'ENV_Sustain', 'ENV_Release',
+    ].map(envRotator => scene.getObjectByName(envRotator));
 
     this.waveRotators = [
       'OSC_Wave',
@@ -53,6 +56,7 @@ export class Synthesizer {
       ...this.keys,
       ...this.rotators,
       ...this.waveRotators,
+      ...this.envRotators,
       this.ampVolume,
       this.pitchShiftSwitch,
     ];
@@ -83,12 +87,8 @@ export class Synthesizer {
     this.lfo.connect(this.ampEnv);
     this.lfo.sync().start();
 
-    this.toneRotators = [
-      'osc.partialCount',
+    this.envToneRotators = [
       'ampEnv.attack', 'ampEnv.decay', 'ampEnv.sustain', 'ampEnv.release',
-      'lfo.frequency.value', 'lfo.phase.value',
-      'pitch.pitch', 'pitch.delay',
-      'filter.frequency.value', 'filter.octaves', 'filter.baseFrequency', 'filter.depth.value',
     ];
   }
 

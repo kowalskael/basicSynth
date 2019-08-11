@@ -47,3 +47,4 @@ THREE.DefaultLoadingManager.onLoad = () => {
   synth = new Synthesizer(scene, camera, canvas);
   render();
 };
+

@@ -1,6 +1,7 @@
 import * as Tone from 'tone';
 import { model } from './model';
 
+/*
 const gain = new Tone.Gain();
 gain.toMaster();
 
@@ -43,7 +44,7 @@ pitch.connect(ampEnv);
 const $pitch = document.querySelector('#pitch');
 $pitch.addEventListener('input', () => pitch.pitch = $pitch.value);
 const $wet = document.querySelector('#wet');
-$wet.addEventListener('input', () => pitch.delayTime.value = $wet.value);
+$wet.addEventListener('input', () => pitch.wet.value = $wet.value);
 
 const osc = new Tone.Oscillator(20, 'sine');
 osc.fan(ampEnv, filter, pitch);
@@ -69,6 +70,7 @@ $keyFreq.forEach((key, index) => key.addEventListener('click', () => osc.frequen
 const keyCodes = $keyFreq.map(div => div.getAttribute('data-key'));
 
 window.addEventListener('keydown', event => {
+	console.log(event.code);
 	const index = keyCodes.indexOf(event.code);
 	osc.frequency.value = indexToFreq(index);
 });
@@ -79,8 +81,8 @@ lfo.sync().start();
 
 const $lfoFreq = document.querySelector('#lfo-freq');
 $lfoFreq.addEventListener('input', () => lfo.frequency.value = $lfoFreq.value);
-const $lfoPhase = document.querySelector('#lfo-phase');
-$lfoPhase.addEventListener('input', () => lfo.phase = $lfoPhase.value);
+const $lfoAmp = document.querySelector('#lfo-phase');
+$lfoAmp.addEventListener('input', () => lfo.phase.value = $lfoPhase.value);
 const $lfoSine = document.querySelector('#lfo-sine');
 $lfoSine.addEventListener('click', () => lfo.type = 'sine');
 const $lfoSquare = document.querySelector('#lfo-square');
@@ -91,7 +93,7 @@ const $lfoSawtooth = document.querySelector('#lfo-sawtooth');
 $lfoSawtooth.addEventListener('click', () => lfo.type = 'sawtooth');
 
 const $toggle = document.querySelector('#toggle');
-$toggle.addEventListener('click', function () {
+$toggle.addEventListener('click', function() {
 	ampEnv.tiggerAttack = !ampEnv.tiggerAttack;
 	Tone.Transport.Start = !Tone.Transport.Start;
 	if (ampEnv.tiggerAttack && Tone.Transport.Start) {
@@ -103,3 +105,5 @@ $toggle.addEventListener('click', function () {
 	}
 
 });
+
+ */

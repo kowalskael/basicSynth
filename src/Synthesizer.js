@@ -1,5 +1,7 @@
 import * as THREE from 'three';
-import { lerp, norm, clamp, degToRad, mapRange } from './math';
+import { clamp, degToRad, mapRange } from './math';
+import * as Tone from 'tone';
+
 
 export class Synthesizer {
   raycaster = new THREE.Raycaster();
@@ -57,6 +59,45 @@ export class Synthesizer {
     document.addEventListener('mousedown', this.onMouseDown);
     document.addEventListener('mousemove', this.onMouseMove);
     document.addEventListener('mouseup', this.onMouseUp);
+
+    const gain = new Tone.Gain();
+    gain.toMaster();
+
+    const ampEnv = new Tone.AmplitudeEnvelope();
+    ampEnv.connect(gain);
+
+    const amp = new Tone.Volume(0);
+    amp.connect(ampEnv);
+
+    const filter = new Tone.AutoFilter(2, 0.6);
+    filter.connect(amp).sync().start();
+
+    const filterEnv = new Tone.Envelope();
+    filterEnv.connect(filter);
+
+    const pitch = new Tone.PitchShift();
+    pitch.connect(ampEnv);
+
+    const osc = new Tone.Oscillator(20, 'sine');
+    osc.fan(ampEnv, filter, pitch);
+    osc.start();
+
+    const lfo = new Tone.LFO(400, 0, 1);
+    lfo.connect(ampEnv);
+    lfo.sync().start();
+
+    const $toggle = document.querySelector('#toggle-1');
+    $toggle.addEventListener('click', function() {
+      ampEnv.tiggerAttack = !ampEnv.tiggerAttack;
+      Tone.Transport.Start = !Tone.Transport.Start;
+      if (ampEnv.tiggerAttack && Tone.Transport.Start) {
+        ampEnv.triggerAttack();
+        Tone.Transport.start();
+      } else {
+        ampEnv.triggerRelease();
+        Tone.Transport.stop();
+      }
+    });
   }
 
   onMouseDown = event => {
@@ -92,7 +133,6 @@ export class Synthesizer {
       mapRange(event.clientY, 0, this.canvas.clientHeight, 1, -1),
     );
 
-    // rotators
     const x = event.clientX - this.currentObjectCenter.x;
     const y = event.clientY - this.currentObjectCenter.y;
     const angle = -Math.atan2(y, x);
@@ -101,26 +141,23 @@ export class Synthesizer {
 
       // rotators
       if (this.rotators.indexOf(this.currentObject) > -1) {
-        if (angle < degToRad(180) && angle > degToRad(-60)) {
-          this.currentObject.rotation.y = angle;
-        }
+        const limit = clamp(angle, degToRad(-120), degToRad(120));
+        this.currentObject.rotation.y = limit;
       }
 
       // waveRotators
       if (this.waveRotators.indexOf(this.currentObject) > -1) {
-        if (angle < degToRad(180) && angle > degToRad(-180)) {
-          if (angle < degToRad(180) && angle > degToRad(100)) {
-            this.currentObject.rotation.y = degToRad(180);
-          }
-          if (angle < degToRad(100) && angle > degToRad(20)) {
-            this.currentObject.rotation.y = degToRad(100);
-          }
-          if (angle < degToRad(20) && angle > degToRad(-60)) {
-            this.currentObject.rotation.y = degToRad(20);
-          }
-          if (angle < degToRad(-60) && angle > degToRad(-180)) {
-            this.currentObject.rotation.y = degToRad(-60);
-          }
+        if (angle > degToRad(-180) && angle < degToRad(-30)) {
+          this.currentObject.rotation.y = degToRad(-90);
+        }
+        if (angle > degToRad(-30) && angle < degToRad(30)) {
+          this.currentObject.rotation.y = degToRad(-30);
+        }
+        if (angle > degToRad(30) && angle < degToRad(90)) {
+          this.currentObject.rotation.y = degToRad(30);
+        }
+        if (angle > degToRad(90) && angle < degToRad(180)) {
+          this.currentObject.rotation.y = degToRad(90);
         }
       }
 
@@ -142,7 +179,6 @@ export class Synthesizer {
           this.pitchShiftSwitch.rotation.x = degToRad(40);
         }
       }
-
     }
 
   };
@@ -153,7 +189,6 @@ export class Synthesizer {
       this.currentObject.rotation.x = 0;
     }
     this.currentObject = null;
-
   };
 
   update() {

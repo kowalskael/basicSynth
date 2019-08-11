@@ -38,11 +38,13 @@ export class Synthesizer {
       'PSFT_Pitch', 'PSFT_Delay',
       'FLTR_Freq', 'FLTR_Octaves', 'FLTR_BaseFreq', 'FLTR_Depth',
     ].map(rotator => scene.getObjectByName(rotator));
+
     this.waveRotators = [
       'OSC_Wave',
       'LFO_Wave',
       'FLTR_Wave',
     ].map(waveRotator => scene.getObjectByName(waveRotator));
+
     this.pitchShiftSwitch = scene.getObjectByName('PSFT_Switch');
     this.ampVolume = scene.getObjectByName('AMP_Volume');
     this.LCD = scene.getObjectByName('LCD');
@@ -54,7 +56,6 @@ export class Synthesizer {
       this.ampVolume,
       this.pitchShiftSwitch,
     ];
-
 
     this.gain = new Tone.Gain();
     this.gain.toMaster();
@@ -82,18 +83,14 @@ export class Synthesizer {
     this.lfo.connect(this.ampEnv);
     this.lfo.sync().start();
 
-
-
     this.toneRotators = [
       'osc.partialCount',
       'ampEnv.attack', 'ampEnv.decay', 'ampEnv.sustain', 'ampEnv.release',
       'lfo.frequency.value', 'lfo.phase.value',
-      'pitch.pitch', 'PSFT_Delay',
+      'pitch.pitch', 'pitch.delay',
       'filter.frequency.value', 'filter.octaves', 'filter.baseFrequency', 'filter.depth.value',
     ];
   }
-
-
 
   update() {
     // console.log('update');

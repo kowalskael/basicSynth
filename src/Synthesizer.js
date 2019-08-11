@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { degToRad, mapRange } from './math';
+import { lerp, norm, clamp, degToRad, mapRange } from './math';
 
 export class Synthesizer {
   raycaster = new THREE.Raycaster();
@@ -31,19 +31,26 @@ export class Synthesizer {
     ].map(keyName => scene.getObjectByName(keyName));
 
     this.rotators = [
-      'OSC_Wave', 'OSC_Partial',
+      'OSC_Partial',
       'ENV_Atack', 'ENV_Decay', 'ENV_Sustain', 'ENV_Release',
-      'LFO_Wave', 'LFO_Freq', 'LFO_Phase',
+      'LFO_Freq', 'LFO_Phase',
       'PSFT_Pitch', 'PSFT_Delay',
-      'FLTR_Wave', 'FLTR_Freq', 'FLTR_Octaves', 'FLTR_BaseFreq', 'FLTR_Depth',
-      'AMP_Volume',
+      'FLTR_Freq', 'FLTR_Octaves', 'FLTR_BaseFreq', 'FLTR_Depth',
     ].map(rotator => scene.getObjectByName(rotator));
+    this.waveRotators = [
+      'OSC_Wave',
+      'LFO_Wave',
+      'FLTR_Wave',
+    ].map(waveRotator => scene.getObjectByName(waveRotator));
     this.pitchShiftSwitch = scene.getObjectByName('PSFT_Switch');
+    this.ampVolume = scene.getObjectByName('AMP_Volume');
     this.LCD = scene.getObjectByName('LCD');
 
     this.allObjects = [
       ...this.keys,
       ...this.rotators,
+      ...this.waveRotators,
+      this.ampVolume,
       this.pitchShiftSwitch,
     ];
 
@@ -82,21 +89,52 @@ export class Synthesizer {
 
     this.mouseVec.set(
       mapRange(event.clientX, 0, this.canvas.clientWidth, -1, 1),
-      mapRange(event.clientY, 0, this.canvas.clientHeight, -1, 1),
+      mapRange(event.clientY, 0, this.canvas.clientHeight, 1, -1),
     );
 
-    if (this.rotators.indexOf(this.currentObject) > -1) {
-      const x = event.clientX - this.currentObjectCenter.x;
-      const y = event.clientY - this.currentObjectCenter.y;
+    // rotators
+    const x = event.clientX - this.currentObjectCenter.x;
+    const y = event.clientY - this.currentObjectCenter.y;
+    const angle = -Math.atan2(y, x);
 
-      this.currentObject.rotation.y = -Math.atan2(y, x);
-      console.log(this.currentObject.rotation.y);
-    }
     if (this.currentObject) {
+
+      // rotators
+      if (this.rotators.indexOf(this.currentObject) > -1) {
+        if (angle < degToRad(180) && angle > degToRad(-60)) {
+          this.currentObject.rotation.y = angle;
+        }
+      }
+
+      // waveRotators
+      if (this.waveRotators.indexOf(this.currentObject) > -1) {
+        if (angle < degToRad(180) && angle > degToRad(-180)) {
+          if (angle < degToRad(180) && angle > degToRad(100)) {
+            this.currentObject.rotation.y = degToRad(180);
+          }
+          if (angle < degToRad(100) && angle > degToRad(20)) {
+            this.currentObject.rotation.y = degToRad(100);
+          }
+          if (angle < degToRad(20) && angle > degToRad(-60)) {
+            this.currentObject.rotation.y = degToRad(20);
+          }
+          if (angle < degToRad(-60) && angle > degToRad(-180)) {
+            this.currentObject.rotation.y = degToRad(-60);
+          }
+        }
+      }
+
+      // ampVolume
+      if (this.currentObject === this.ampVolume) {
+        this.currentObject.rotation.y = angle;
+      }
+
+      // keys
       if (this.keys.indexOf(this.currentObject) > -1) {
         this.currentObject.rotation.x = 0.05;
       }
 
+      // pitchShiftSwitch
       if (this.currentObject === this.pitchShiftSwitch) {
         if (this.pitchShiftSwitch.rotation.x > 0) {
           this.pitchShiftSwitch.rotation.x = degToRad(-40);
@@ -104,8 +142,9 @@ export class Synthesizer {
           this.pitchShiftSwitch.rotation.x = degToRad(40);
         }
       }
-    };
-    
+
+    }
+
   };
 
   onMouseUp = () => {

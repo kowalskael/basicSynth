@@ -91,17 +91,19 @@ export class Synthesizer {
     this.lfo.sync().start();
 
     const $toggle = document.querySelector('#toggle-1');
-    $toggle.addEventListener('click', function() {
-      this.ampEnv.tiggerAttack = !this.ampEnv.tiggerAttack;
-      this.Tone.Transport.Start = !this.Tone.Transport.Start;
-      if (this.ampEnv.tiggerAttack && this.Tone.Transport.Start) {
-        this.ampEnv.triggerAttack();
-        this.Tone.Transport.start();
-      } else {
-        this.ampEnv.triggerRelease();
-        this.Tone.Transport.stop();
-      }
-    });
+    $toggle.addEventListener('click', this.toneTiggerAttack);
+  }
+
+  toneTiggerAttack = () => {
+    this.ampEnv.tiggerAttack = !this.ampEnv.tiggerAttack;
+    Tone.Transport.Start = !Tone.Transport.Start;
+    if (this.ampEnv.tiggerAttack && Tone.Transport.Start) {
+      this.ampEnv.triggerAttack();
+      Tone.Transport.start();
+    } else {
+      this.ampEnv.triggerRelease();
+      Tone.Transport.stop();
+    }
   }
 
   onMouseDown = event => {
@@ -147,9 +149,9 @@ export class Synthesizer {
       if (this.rotators.indexOf(this.currentObject) > -1) {
         const limit = clamp(angle, degToRad(-120), degToRad(120));
         this.currentObject.rotation.y = limit;
-        const oscFrequency = mapRange(limit, degToRad(-120), degToRad(120), 1000, 20);
-        this.osc.frequency.value = oscFrequency;
-        console.log(this.osc.frequency.value);
+        const oscFrequency = mapRange(limit, degToRad(-120), degToRad(120), 32, 0);
+        this.osc.partialCount = Math.round(oscFrequency);
+        console.log(this.osc.partialCount);
       }
 
       // waveRotators

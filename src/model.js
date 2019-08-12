@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import obj from './assets/elsynth_1.gltf';
 import { dumpObject } from './dumpObject';
-import { SynthEvents } from './SynthEvents';
+import { Synthesizer } from './Synthesizer';
 
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -44,7 +44,7 @@ const render = () => {
 THREE.DefaultLoadingManager.onLoad = () => {
   window.addEventListener('resize', resize);
   resize();
-  synth = new SynthEvents(scene, camera, canvas);
+  synth = new Synthesizer(scene, camera, canvas);
   render();
 };
 
